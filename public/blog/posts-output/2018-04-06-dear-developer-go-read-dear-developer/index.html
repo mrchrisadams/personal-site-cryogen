@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Blog. Journal.: Dear Developer, go read &quot;Dear Developer&quot;</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;ve just finished reading through Charlie Owen&#39;s converted-webpage-from-a-talk thing, Dear Developer. It&#39;s funny, friendly and really captures the wonder of the web as a medium to work with. Without picking fights, it steers developers away from a lot of bad practices, and towards ones which are more empathetic, resilient and performant. In this post I share a few gems that stood out.">
+
+<meta property="og:description" content="I&#39;ve just finished reading through Charlie Owen&#39;s converted-webpage-from-a-talk thing, Dear Developer. It&#39;s funny, friendly and really captures the wonder of the web as a medium to work with. Without picking fights, it steers developers away from a lot of bad practices, and towards ones which are more empathetic, resilient and performant. In this post I share a few gems that stood out.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/blog/posts-output/2018-04-06-dear-developer-go-read-dear-developer/" />
+<meta property="og:title" content="Dear Developer, go read &quot;Dear Developer&quot;" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/blog/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Blog. Journal." href="/blog/">
+                <div class="text desktop-and-tablet-only">Blog. Journal.</div>
+                <div class="text mobile-only">Blog. Journal.</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/blog/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/blog/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/blog/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/blog/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/blog/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/blog/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/blog/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/blog/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/blog/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Dear Developer, go read &quot;Dear Developer&quot;</h1>
+        <div class="byline">
+            <span class="date">6 April 2018</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p><i>I've just finished reading through Charlie Owen's converted-webpage-from-a-talk thing, Dear Developer. It's funny, friendly and really captures the wonder of the web as a medium to work with. Without picking fights, it steers developers away from a lot of bad practices, and towards ones which are more empathetic, resilient and performant. In this post I share a few gems that stood out.</i></p><h3>The web as a resilient technology</h3><p>If you've developer with the web much over the last few years, you can't help but notice a trend towards pages becoming brittle. I mean this in the sense that if there's an error in the javascript, or a resource like a javascript file doesn't load in time, the page is essentially unusable.</p><p>She shows a really nice example by using Firefox's DOM inspector to take a page apart, and have it still work. Here's the quote below, but the link to <a href="https://hyp.is/VMx0pjmlEeijpCfeEnpHBw/sonniesedge.co.uk/talks/dear-developer">the section via hypothesis of the page is here and shows the video:</a></p><blockquote>It is this flirty declarative nature makes HTML so incredibly robust. Just look at this video. It shows me pulling chunks out of the Amazon homepage as I browse it, while the page continues to run.
+<p>Let’s just stop and think about that, because we take it for granted. I’m pulling chunks of code out of a running computer application, AND IT IS STILL WORKING.</p><p>Just how… INCREDIBLE is that? Can you imagine pulling random chunks of code out of the memory of your iPhone or Windows laptop, and still expecting it to work? Of course not! But with HTML, it’s a given.</p></blockquote><h4>The pyramid of robustness</h4><p>I really like the visual device, the Pyramid of Robustness she uses for this too</p><p>[caption id="attachment_2960" width="1920"]<img class="alignnone size-full wp-image-2960" src="https://mrchrisadamsblog.files.wordpress.com/2018/04/pyramid-of-robustness.jpeg" alt="Pyramid of robustness" width="1920" height="1080" /> Pyramid of robustness[/caption]</p><p>It's a deft way of presenting the downsides of building assuming javascript is always working, and there being a fast enough connection to download all the resources on a page quickly:</p><p>[caption id="attachment_2961" width="1920"]<img class="alignnone size-full wp-image-2961" src="https://mrchrisadamsblog.files.wordpress.com/2018/04/pyramid-upside-down.jpeg" alt="The Pyramid of Robustness, upside down" width="1920" height="1080" /> The Pyramid of Robustness, upside down[/caption]</p><p>There's a really good visual gag here that made me guffaw in the silent section of the coworking space I was in when I read it first. I won't spoil it for you.</p><h3>Getting started with a11y and why it's important.</h3><p>There's a nice part about getting started with accessibility or (a11y) to it's friends, and how to do this easily on a mac.</p><p>You just hit command+f5 to start voice-over, and you can start navigating content the same way someone who is partially sighted, or blind would.</p><p>It also covers <i>why </i>it's important. Accessibility is often mischaracterised as designing for blind people, and as a sighted person, it's often thought of as the key reason (I'm guilty of this in this section myself).</p><p>It's the right thing to do, but it's also worth thinking about this in terms of a design being resilient - people can be temporarily disabled when they injure themselves or even when they're just holding something in one arm, like a bag of shopping or a child. <a href="https://www.microsoft.com/en-us/design/inclusive">The persona Spectrum from Microsoft</a> is a good example of this.</p><p>[caption id="attachment_2962" width="1700"]<img class="alignnone size-full wp-image-2962" src="https://mrchrisadamsblog.files.wordpress.com/2018/04/screen-shot-2018-04-06-at-16-46-31.png" alt="Screen Shot 2018-04-06 at 16.46.31" width="1700" height="1416" /> Microsoft's Persona Spectrum for inclusive design[/caption]</p><p>When it's presented like this, it reframes a11y as not being a question of charity or guilt, but being one of pragmatism and professionalism.</p><p>Framing it like this in terms of positive, intrinsic motivation makes it feel more likely to be adopted.</p><p>There's a nice quote from Theo Schlossnagle from Circonus that I feel captures this idea - he uses it in the context of hiring, but it's stayed with me ever since I heard it:</p><blockquote><h4>I don't want programmers, I want professionals<i>.</i></h4></blockquote><p>If we want to call ourselves software engineers and act like we're a grown-up profession, then we should hold ourselves to the standards engineers and other professions hold themselves to.</p><p>And that means to acknowledge the full range of contexts the products and services we create are used in.</p><h3>Go take the time to read it</h3><p>I'm when speaking to people who want to learn to code for the web, I think I'm going to point them to this as a thing to read for understanding why the web is magical.</p><p>If you haven't read it yourself yet, I <i>strongly </i>recommend checking it out.</p><p>See? It's even got a nice short url - <a href="https://sonniesedge.co.uk/talks/dear-developer">go read it now.</a></p><p><a href="https://sonniesedge.co.uk/talks/dear-developer">https://sonniesedge.co.uk/talks/dear-developer</a></p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/blog/posts-output/2018-04-10-researchops-in-berlin/"><svg class="icon icon-circle-left"><use xlink:href="/blog/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">ResearchOps in Berlin</div></a>
+    
+    
+    <a class="next" href="/blog/posts-output/2018-04-05-omgdpr-is-live-zomg/"><div class="nav-text"">OMGDPR is live - ZOMG</div><svg class="icon icon-circle-right"><use xlink:href="/blog/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/blog/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

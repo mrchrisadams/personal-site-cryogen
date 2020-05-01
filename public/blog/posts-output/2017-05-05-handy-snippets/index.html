@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Blog. Journal.: Handy snippets - Python without the .pyc cruft</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I maintain a huge workflowy file of snippets and tricks and, I suspect some of them will be handy for others to use too. I&#39;m going to sharing them regularly, when I&#39;m not sure what to write, mainly to keep the habit of blogging, until it comes naturally.">
+
+<meta property="og:description" content="I maintain a huge workflowy file of snippets and tricks and, I suspect some of them will be handy for others to use too. I&#39;m going to sharing them regularly, when I&#39;m not sure what to write, mainly to keep the habit of blogging, until it comes naturally.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/blog/posts-output/2017-05-05-handy-snippets/" />
+<meta property="og:title" content="Handy snippets - Python without the .pyc cruft" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/blog/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Blog. Journal." href="/blog/">
+                <div class="text desktop-and-tablet-only">Blog. Journal.</div>
+                <div class="text mobile-only">Blog. Journal.</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/blog/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/blog/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/blog/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/blog/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/blog/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/blog/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/blog/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/blog/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/blog/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Handy snippets - Python without the .pyc cruft</h1>
+        <div class="byline">
+            <span class="date">5 May 2017</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p><em>I maintain a huge workflowy file of snippets and tricks and, I suspect some of them will be handy for others to use too. I'm going to sharing them regularly, when I'm not sure what to write, mainly to keep the habit of blogging, until it comes naturally.</em></p><p>Part of my professional life, involves me writing a fair amount of python code. When you write python, you end up creating lots of files ending with <code>.py</code>, but when you <em>run</em> the code, you end up with compiled python files, sending in <code>pyc</code>.</p><p>If you don't want loads of <code>pyc</code> files crufting up your workspace, and you're workignon the command line, there's a handy little environment variable you can set in your shell, to banish those ugly files once and for good. Run this command before working (or better yet, make it run whenever you open a terminal window):</p><p>[code lang="bash"]</p><p>export PYTHONDONTWRITEBYTECODE=1</p><p>[/code]</p><p>See, isn't that better?</p><p>I picked up this gem from the <a href="http://docs.python-guide.org/en/latest/writing/gotchas/#bytecode-pyc-files-everywhere">Hitchhiker's Guide to Python</a>, a free, opinionated book from Kenneth Reitz about good practices with working with Python. Reading it will almost certainly improve your python - I know mine is better as a result of spending some looking over it.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/blog/posts-output/2017-05-08-reviewing-your-options-for-setting-up-a-small-website/"><svg class="icon icon-circle-left"><use xlink:href="/blog/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Reviewing the options for setting up a small website, and ending up with WordPress</div></a>
+    
+    
+    <a class="next" href="/blog/posts-output/2017-05-03-value-chain-mapping-by-example-with-growing-communities/"><div class="nav-text"">Value Chain Mapping by example with Growing Communities</div><svg class="icon icon-circle-right"><use xlink:href="/blog/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/blog/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Blog. Journal.: Recap - storing state in a browser for users</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;ve been working on some static sites recently, and I needed to show some content to someone, but allow it to be dismissed easily, and then stay dismissed. This is much a note to future me as anyone else, but hopefully it&#39;ll be helpful to some other soul on the net.">
+
+<meta property="og:description" content="I&#39;ve been working on some static sites recently, and I needed to show some content to someone, but allow it to be dismissed easily, and then stay dismissed. This is much a note to future me as anyone else, but hopefully it&#39;ll be helpful to some other soul on the net.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/blog/posts-output/2018-01-09-recap-storing-state-in-a-browser-for-users/" />
+<meta property="og:title" content="Recap - storing state in a browser for users" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/blog/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Blog. Journal." href="/blog/">
+                <div class="text desktop-and-tablet-only">Blog. Journal.</div>
+                <div class="text mobile-only">Blog. Journal.</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/blog/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/blog/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/blog/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/blog/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/blog/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/blog/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/blog/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/blog/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/blog/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Recap - storing state in a browser for users</h1>
+        <div class="byline">
+            <span class="date">9 January 2018</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I've been working on some static sites recently, and I needed to show some content to someone, but allow it to be dismissed easily, and then stay dismissed. This is much a note to future me as anyone else, but hopefully it'll be helpful to some other soul on the net.</p><h3>Doing this with frameworks like django or rails</h3><p>When I'm working with a full dynamic site, how you do this is usually hidden from you using a handy data structure in the language that your framework is written in.</p><p>For example, in django you often have a handy session object available, which works like a dictionary you can get and set data on. Let's say you have a blog, and you want to set some state on the user, to mark that they've commented on on a post you've written.</p><p>In some view code handling a get request, you might set a value on the session like so:</p><pre><span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="p">[</span><span class="s1">'has_commented'</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span></pre><p>Then, later on you could check for this by calling <code>get</code> on the session object:</p><pre><span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'has_commented'</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span><span class="k">return</span> <span class="n">HttpResponse</span><span class="p">(</span><span class="s2">"You've already commented."</span><span class="p">)</span></pre><p>Python also has a native cookie library that does a similar job, of storing state on a client browser, and sparing you the gory details.</p><p>This is very handy, but when when you're working with a static site, you don't have the server there to wrap all of it in some tasty syntactic sugar.</p><p>If like me, you've had it abstracted away from you most of the time, it might be useful to know your options.</p><h3>Your options if you need to do it yourself</h3><h4>If you want to keep data on the client</h4><p>Right now, if you want to store state <em>just</em> on the client you have two popular options: local storage, and session storage. In both cases you use javascript to write values, with an api that looks a bit like so:</p><pre class="brush: js line-numbers  language-js"><code class=" language-js"><span class="token comment">// Save data to sessionStorage</span>
+sessionStorage<span class="token punctuation">.</span><span class="token function">setItem</span><span class="token punctuation">(</span><span class="token string">'key'</span><span class="token punctuation">,</span> <span class="token string">'value'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// Get saved data from sessionStorage</span><span class="token keyword">var</span> data <span class="token operator">=</span> sessionStorage<span class="token punctuation">.</span><span class="token function">getItem</span><span class="token punctuation">(</span><span class="token string">'key'</span><span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre><p>The main difference between localstorage and session storage is that <strong>session storage</strong> is automatically expired at the when you close a tab. By comparison, <strong>local storage</strong> persists, so you can visit a page, set some data, close it, and assuming you haven't set a super short expiry date, access it again the following day  from the same browser.</p><p>You can't access this from a server though it never leaves the browser.</p><h4>If you want to be able to access the data on the server</h4><p>If you <em>do</em> want data to persist for more than one session, <em>and</em> you want to be able to read this information on the server side (like the example the django example above), then cookies are a better fit. They work at the HTTP level, so they're really sent as extra headers when you send HTTP requests to a server somewhere. <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">Mozilla's docs are fantastic</a> if you want to learn more about what's really happening under the hood.</p><p>You might want to have a similar API to the session and local storage APIs, to keep them easy to remember, so you can use javasscript to set data on a user's client browser like so:</p><pre><span class="pl-smi">// set a value as cookie
+docCookies</span>.<span class="pl-c1">setItem</span>(name, value)
+
+// get saved value from the cookies
+<span class="pl-smi">docCookies</span>.<span class="pl-c1">getItem</span>(name)</pre><p>If you want this, then you want to look at the nice <a href="https://github.com/madmurphy/cookies.js">cookies.js</a> library, that wraps it up in some nice synatactic sugar, and save you remember esoteric invokations, just to set some basic data on a client.</p><p>Just remember, you can't set much data with cookies compared local storage or session storage.</p><p>Obviously if you're sending data back and forth between a browser and server, there are privacy implications and in the EU, you should to inform users how you're using cookies, to get consent before you start tracking your users. Again the <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies">MDN docs are a good concise starting point,</a> if you need a reminder.</p><p> </p><p> </p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/blog/posts-output/2018-01-10-how-much-co2-does-an-office-worker-generate-per-year/"><svg class="icon icon-circle-left"><use xlink:href="/blog/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">How much CO2 does an office worker generate per year?</div></a>
+    
+    
+    <a class="next" href="/blog/posts-output/2018-01-08-super-hand-tip-search-your-own-tabs-in-firefox/"><div class="nav-text"">Super hand tip - search your own tabs in Firefox</div><svg class="icon icon-circle-right"><use xlink:href="/blog/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/blog/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Blog. Journal.: Debugging in python with pdb and dropping into a &#39;proper&#39; session</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="If you code in python, there&#39;s a reasonably high chance you&#39;ve heard of dropping into a debugger with something like pdb, or if you prefer ipython, ipdb.">
+
+<meta property="og:description" content="If you code in python, there&#39;s a reasonably high chance you&#39;ve heard of dropping into a debugger with something like pdb, or if you prefer ipython, ipdb.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/blog/posts-output/2018-07-30-debugging-in-python-with-pdb-and-dropping-into-a-proper-session/" />
+<meta property="og:title" content="Debugging in python with pdb and dropping into a &#39;proper&#39; session" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/blog/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/blog/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Blog. Journal." href="/blog/">
+                <div class="text desktop-and-tablet-only">Blog. Journal.</div>
+                <div class="text mobile-only">Blog. Journal.</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/blog/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/blog/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/blog/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/blog/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/blog/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/blog/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/blog/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/blog/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/blog/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Debugging in python with pdb and dropping into a &#39;proper&#39; session</h1>
+        <div class="byline">
+            <span class="date">30 July 2018</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>If you code in python, there's a reasonably high chance you've heard of dropping into a debugger with something like pdb, or if you prefer ipython, ipdb.</p><p>It's a really, really handy skill, and if you haven't done this before, this 40 minute video gives a good overview of how it can help you:</p><p>https://www.youtube.com/watch?v=lnlZGhnULn4</p><h3>But what if I want to do stuff on more than one line?</h3><p>One nice thing about the debugger like this is that it puts you in a REPL like environment, where you can see what the values of various variables are, and call functions to see what they returned values might be.</p><p>The thing is, if you want to use a loop, or an if/then construct, you'll get a stroppy message like so, when you try to break onto the next line:</p><pre>for obj in collection_of_objects:
+*** SyntaxError: unexpected EOF while parsing<code></code></pre><p>This isn't great - if you're trying to investigate why code is working the way it's working, having some basic features normally offered  by the language makes life much easier - part of the point of dropping into a debugger in the first place is to use the language you've written code in to understand the what's going on in the code better.</p><h3>Oh, interact - <em>that's</em> what it's for</h3><p>This is where <strong><em><a href="https://docs.python.org/3/library/pdb.html#pdbcommand-interact">interact</a> </em></strong>comes in. if you're in a pdb session, you can type <code>interact</code>, and  you'll end up in a <em>proper</em> python session where you have all the abilities you'd have with a regular python prompt, like loops, if/thens and so on.</p><p>Once you're done, hit <code>ctrl+d</code> and you'll end up back in the debugging session you were in when you first started with pdb.</p><p><em>I've been programming python professionally since 2008, and I discovered this today. Oh well, better late than never, right?
+</em></p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/blog/posts-output/2018-08-01-things-i-recently-learned-about-greening-aviation/"><svg class="icon icon-circle-left"><use xlink:href="/blog/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Things I recently learned about greening aviation</div></a>
+    
+    
+    <a class="next" href="/blog/posts-output/2018-05-31-trying-out-a-sustainability-focussed-lean-coffee-in-berlin/"><div class="nav-text"">Trying out a sustainability focussed lean coffee in Berlin</div><svg class="icon icon-circle-right"><use xlink:href="/blog/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/blog/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>
