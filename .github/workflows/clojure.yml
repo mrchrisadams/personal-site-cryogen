@@ -30,7 +30,7 @@ jobs:
         options: ''
         ssh_options: ''
         src: 'public/'
-        dest: 'deploy@blog.chrisadams.me.uk:/var/www/blog.chrisadams.me.uk/public/'
+        dest: 'deploy@speed-api.greening.digital:/var/www/blog.chrisadams.me.uk/public/'
 
     - name: Display status from deploy
       run: echo "${{ steps.deploy.outputs.status }}"
