@@ -20,17 +20,24 @@ jobs:
     - name: Build content
       run: lein run
 
-    - name: Deploy to server
-      id: deploy
-      uses: Pendect/action-rsyncer@v1.1.0
-      env:
-        DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
-      with:
-        flags: '-avzr --delete'
-        options: ''
-        ssh_options: ''
-        src: 'public/'
-        dest: 'deploy@${{secrets.TARGET_SERVER}}:/var/www/blog.chrisadams.me.uk/public/'
+    # - name: Deploy to server
+    #   id: deploy
+    #   uses: Pendect/action-rsyncer@v1.1.0
+    #   env:
+    #     DEPLOY_KEY: ${{secrets.DEPLOY_KEY}}
+    #   with:
+    #     flags: '-avzr --delete'
+    #     options: ''
+    #     ssh_options: ''
+    #     src: 'public/'
+    #     dest: 'deploy@${{secrets.TARGET_SERVER}}:/var/www/blog.chrisadams.me.uk/public/'
 
-    - name: Display status from deploy
-      run: echo "${{ steps.deploy.outputs.status }}"
+    # - name: Display status from deploy
+    #   run: echo "${{ steps.deploy.outputs.status }}"
+
+    - name: deploy to github pages
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: public # The folder the action should deploy.
