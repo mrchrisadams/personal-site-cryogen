@@ -1,0 +1,23 @@
+{
+  "name": "journal",
+  "version": "1.0.0",
+  "description": "I'm learning clojure. I need a static site again. Let's Crygoen!",
+  "main": "index.js",
+  "dependencies": {
+    "sass": "^1.26.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrchrisadams/personal-site-cryogen.git"
+  },
+  "author": "Chris Adams",
+  "license": "Eclipse Public License",
+  "bugs": {
+    "url": "https://github.com/mrchrisadams/personal-site-cryogen/issues"
+  },
+  "homepage": "https://github.com/mrchrisadams/personal-site-cryogen#readme"
+}
