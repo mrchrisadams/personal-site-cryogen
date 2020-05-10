@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: How much of the web runs on renewables today?</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="As part of the work I&#39;m doing on the Planet Friendly Web, I&#39;m trying to get access to data that I can base the guide on. In some cases this involves creating datasets from existing data. Here I share some findings from a dataset I generated along the way.">
+
+<meta property="og:description" content="As part of the work I&#39;m doing on the Planet Friendly Web, I&#39;m trying to get access to data that I can base the guide on. In some cases this involves creating datasets from existing data. Here I share some findings from a dataset I generated along the way.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2018-05-15-how-much-of-the-web-runs-on-renewables-today/" />
+<meta property="og:title" content="How much of the web runs on renewables today?" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>How much of the web runs on renewables today?</h1>
+        <div class="byline">
+            <span class="date">May 15, 2018</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>As part of the work I'm doing on the <a href="http://planetfriendlyweb.org/">Planet Friendly Web</a>, I'm trying to get access to data that I can base the guide on. In some cases this involves <em>creating</em> datasets from existing data. Here I share some findings from a dataset I generated along the way.</p><p>For example, to get a figure on how much of the web runs on renewable power, I started with a dataset of the top 1 million domains by traffic from Alexa.com, then run the list against the <a href="https://www.thegreenwebfoundation.org/green-web-feed/">Green Web Foundation's own API,</a> which maintains a list of which domains run on renewable power.</p><p>To do this, involves making something like 100k API requests, so I created a screenscraper to carry out the job, and take care of retries, failed requests and so on. You can see it <a href="https://github.com/productscience/pfw-top-mil">here on github</a>.</p><p>I've uploaded the <a href="https://datbase.org/view?query=8be6d29e63b010bb4240dc366e578e1f7f91e89a73062a7802c5b83d9cc793fe">dataset created to datbase</a>, partly as an experiment in making it available in a decentralised way, but also partly try out the workflow for publishing data.</p><p>So, now we have some data, let's see what we can do with it, right?</p><h3>Doing some analysis and some interesting findings</h3><p>I have an <a href="https://github.com/productscience/planet-friendly-web/blob/master/binder/how-much-web-renewable.ipynb">earlier exploration of the data in a notebook on github,</a> but when working with this data, I 'm bit embarrassed to say I forgot how to use the Dataframe filters to slice the data quickly.</p><p>So instead, I've used Open Refine. You could probably store this in a Google spreadsheet too, as 100k rows is big, not but <em>THAT</em> big.</p><h4>Anyway, what do we see?</h4><p>There's a few interesting findings just from faceting data like below in Openrefine,  and sorting by count along a few dimensions:</p><img class="alignnone size-full wp-image-2979" src="https://mrchrisadamsblog.files.wordpress.com/2018/05/screen-shot-2018-05-15-at-12-07-36.png" alt="Screen Shot 2018-05-15 at 12.07.36.png" width="2466" height="1324" /><p>If you're not familiar with OpenRefine, I'll summarise what's visible in this view:</p><ul><li>Youtube.com is now more popular than google.com. Who knew?</li><li>The top three websites in the world run on renewable power. Huzzah!</li><li>Based on the greenweb foundation's data, around 7% of the web the most popular domains on the net run on renewable power.</li><li>Hetzner AG, a German hosting company hosts more domains running on green power than Google does.</li><li>Amazon doesn't appear here at all as a green provider.</li></ul><p>After a slow start, I understood Amazon to be a HUGE player here, and while they have a nice shiny page <a href="https://aws.amazon.com/about-aws/sustainability/">showing off their windfarms and how much renewable power they use</a> , they also run a load of their servers on coal. That they don't appear may be an artefact of the Green Web Foundation going by an organisation's entire power mix, to decide whether a company is running on green power or not.</p><p>I think need to check with Rene at the Green Web Foundation to see.</p><h4>Fancy playing too? Come hang out on slack</h4><p>This shows some pretty superficial analysis, but there's already some interesting nuggets here.</p><p>If working with this data sounds interesting to you, let me know in the comments - I'm looking for collaborators on the Planet Friendly Web Guide.</p><p>Alternatively, <a href="https://join.slack.com/t/sustainableux/shared_invite/enQtMzY0MTQ0NjY5OTQxLWIyYmFhMTkxMjM3ZjMyMjFiYWIyY2JiN2VlMDQ5YWVhZWYwMjdiNzRhNzI0Y2Y2OWE1MGI2MjY2M2EzNzBmOGU">come hang out in the sustainableux.com slack channel</a>, where there's a nice little community growing around sustainable web design.</p><p><strong>If you prefer email</strong></p><p>It turns out there's a <a href="https://www.w3.org/community/sustyweb/">W3C Sustainable web design group</a>. Here's my <a href="https://lists.w3.org/Archives/Public/public-sustyweb/2018May/0011.html">post to the mailing list,</a> if you'd prefer to communicate there via email.</p><p> </p><p> </p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2018-05-25-my-talk-about-a-planet-friendly-web-at-datanatives-in-berlin-last-night/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">My talk about a planet friendly web at DataNatives in Berlin last night</div></a>
+    
+    
+    <a class="next" href="/posts-output/2018-05-02-im-hosting-the-mozilla-global-sprints-in-berlin-in-may-come-along/"><div class="nav-text"">I&#39;m hosting the Mozilla Global Sprints in Berlin in May - come along!</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

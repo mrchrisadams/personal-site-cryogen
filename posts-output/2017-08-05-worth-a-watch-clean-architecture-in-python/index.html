@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Worth a watch - Clean Architecture in Python</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;m experimenting with ways to start posting regularly here, and one way I think might work is to share a link each week to a talk, or video I&#39;ve watched, and why I found it worth watching. As of summer 2017, Python is my primary coding language, and this talk by Brandon Rhodes from 2014 was a lovely find. I&#39;ll explain why in this post.">
+
+<meta property="og:description" content="I&#39;m experimenting with ways to start posting regularly here, and one way I think might work is to share a link each week to a talk, or video I&#39;ve watched, and why I found it worth watching. As of summer 2017, Python is my primary coding language, and this talk by Brandon Rhodes from 2014 was a lovely find. I&#39;ll explain why in this post.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2017-08-05-worth-a-watch-clean-architecture-in-python/" />
+<meta property="og:title" content="Worth a watch - Clean Architecture in Python" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Worth a watch - Clean Architecture in Python</h1>
+        <div class="byline">
+            <span class="date">August 5, 2017</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p><em>I'm experimenting with ways to start posting regularly here, and one way I think might work is to share a link each week to a talk, or video I've watched, and why I found it worth watching. As of summer 2017, Python is my primary coding language, and this talk by Brandon Rhodes from 2014 was a lovely find. I'll explain why in this post.</em></p><p> </p><p>https://www.youtube.com/watch?v=DJtef410XaM</p><h4>Why you might watch it</h4><p>If you've ever written any code in python that pulls data from a database, or external web service, it's easy to get bogged down in long messy chunks of code, that end up being difficult to test, or take a long time for the tests to run.</p><p>Sadly, this often acts as a disincentive against writing tests, which means you end up writing few tests, and end up with buggier code than you want.</p><p>This talk gives a nice round up of the strategies specific to Python 3 you might use to manage this (like <a href="https://docs.python.org/3/library/unittest.mock.html">the built-in mock library</a>), as well as referring to more common techniques used in other languages like dependency injection, in Brandon's typical affable, easy to understand fashion.</p><p>He also gives a nice round introduction to ideas put forward by other programmers, like what <a href="https://www.destroyallsoftware.com/screencasts/catalog/functional-core-imperative-shell">Gary Bernhardt refers to as <em>imperative shell, functional core</em></a>, in his talk<em> <a href="https://www.destroyallsoftware.com/talks/boundaries">Boundaries (also worth a look).</a></em></p><p>If you don't want to spend 45 minutes watching the vid, the general recommendation is that where possible, it's better not to hide IO, (where you talk to a database or API), but instead decouple it as much from the rest of your code as possible, so you can decompose the rest of your code into pure functions which accept and return data - this makes it easier to write fast, easy to understand tests.</p><p>The added benefit of this is that because you are able to understand the what data is going into and out of each function, you're able to test edge cases in these smaller functions, rather than relying on large expensive, slow tests that rely on lots of set up and tear down to create the necessary state you need just to test a single operation on a small subset of the data being set up. I've worked on a couple of projects in the last 12 months that had this problem, and in both cases, it was a real drain on productivity, as well, as being a real pain to work around.</p><p>The final key takeaway I took was what he referred to as having <em>consistent levels of abstraction </em>from the 'top' to the 'bottom' a program - having code that does crunchy IO wrangling mixed in with code that expresses business logic make it difficult to read, but just hiding the IO in a function then continuing to have low levels details in business logic isn't much better, as you're still mentally switching gears as you read. Better to wrap some of the business logic in well named functions too, so you're operating at the same level of abstraction in the code, and at a glance you can read the intent.</p><p>TLDR: if you're writing code in python regularly, and succinctly presents a lot of good ideas from other programming communities, and how they apply when coding in Python - I think it's worth 45 minutes of your time, and it'll almost definitely save that much time in waiting for slow tests inside a month…</p><p> </p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2017-08-15-coming-across-the-pacman-rule/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Coming across the Pacman rule</div></a>
+    
+    
+    <a class="next" href="/posts-output/2017-07-30-testing-formats-for-planet-friendly-web-workshops/"><div class="nav-text"">Testing formats for planet friendly web workshops</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: How to search better with Atom</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;ve been using Atom as my text editor for longer than any other text editor now, after using Textmate, Sublime Text, and Vim for a couple of years each. In this post, I show a little tip I&#39;ve discovered to help make searching more powerful.">
+
+<meta property="og:description" content="I&#39;ve been using Atom as my text editor for longer than any other text editor now, after using Textmate, Sublime Text, and Vim for a couple of years each. In this post, I show a little tip I&#39;ve discovered to help make searching more powerful.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2017-05-11-how-to-search-better-with-atom/" />
+<meta property="og:title" content="How to search better with Atom" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>How to search better with Atom</h1>
+        <div class="byline">
+            <span class="date">May 11, 2017</span>
+            
+            <span class="author">By: mrchrisadams</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p><i>I've been using Atom as my text editor for longer than any other text editor now, after using Textmate, Sublime Text, and Vim for a couple of years each. In this post, I show a little tip I've discovered to help make searching more powerful.</i></p><p>Using Atom?</p><p>I like using Atom as an editor.</p><p>It's free, open source, polished, under constant development in the open with a well funded team, and on the whole, I agree with <a href="https://al3x.net/2008/10/22/on-flight-to-old-text-editors.html">Alex Payne's post about the flight to old text editors</a> feeling like mis-step.</p><p>It's easy enough to start with, and can adapt to work well with many, many languages. It's what I'd recommend to most people learning to code too.</p><p>However, because it isn't a full IDE, you do need to know how to use the search tools to get the most from it.</p><h3>Searching for things that match one pattern, but not another</h3><p>As the wonderful <a href="http://flight-manual.atom.io/using-atom/sections/find-and-replace/">flight manual from Atom editor describes in more</a> detail, you can search in within files, and search within projects easily, by hitting <code>cmd+F</code> to search in a file, and <code>cmd+shift+F</code> to search across your project.</p><p>This is nice, and it's common to search for a pattern like <code>some_function</code>  or some class like <code>Page</code> in your existing project.</p><p>This example here shows a personal site I used to run, searching for mentions of <code>Page</code> in an django project:</p><p>[caption width="1126" id="attachment_1034" align="alignnone"]<img class="alignnone size-full wp-image-1034" src="https://mrchrisadamsblog.files.wordpress.com/2017/05/screen-shot-2017-05-11-at-22-13-25.png" alt="Screen Shot 2017-05-11 at 22.13.25.png" width="1126" height="634" /> I'm getting all kinds of maches, including ones in files I don't want[/caption]</p><p>However, lets say you're working on an app, where you're sure you don't want to look in some kinds of files that also end in <code>.py</code>. This might be some migration files, which are written in python, but you know you won't want to look in them for code that controls how an application works right now. To filter out all the migration files, you can and a second <em>negated</em> pattern, by adding the bang/exclamation mark instead, like so:</p><p>[caption width="1126" id="attachment_1036" align="alignnone"]<img class="alignnone size-full wp-image-1036" src="https://mrchrisadamsblog.files.wordpress.com/2017/05/screen-shot-2017-05-11-at-22-13-47.png" alt="Screen Shot 2017-05-11 at 22.13.47.png" width="1126" height="634" /> That's more like it, no migration files in the search results. Huzzah![/caption]</p><p>This is, <em>really, really</em> handy when working with javascript projects, and huge <code>node_modules</code> directories. More here in this <a href="https://discuss.atom.io/t/a-way-to-exclude-folders-from-find-in-project/9861/9">forum thread on discuss.atom.io</a>.</p><h3>Searching across files you normally want to ignore in a project</h3><p>The other handy trick I've started using a fair amount of late, and especially since I started writing in javascript and python more is toggling the search behaviour between to ignore the files that you have told git to ignore with a <code>.gitignore</code> file, and including them when you're trying to understand where a given bit of code came from.</p><p>You can do this the quick and dirty way by opening up Atom's config file here:</p><img class="alignnone size-full wp-image-1055" src="https://mrchrisadamsblog.files.wordpress.com/2017/05/screen-shot-2017-05-11-at-22-25-08.png" alt="Screen Shot 2017-05-11 at 22.25.08.png" width="354" height="412" /><p>And in the <code>config.cson</code> file that's presented ​to you, making sure you have this property set to either true or false:</p><p>[code lang="coffeescript"]</p><p>"*":
+core:
+excludeVcsIgnoredPaths: true
+[/code]</p><p>If you have this set to true, you'll have faster searching of just the files and folders you have decided to ignore with your <code>gitignore</code> file. But if you <em>do</em> need to search for something in something like a <code>node_modules</code> folder in javascript, in a <code>virtual environment</code> in Python, you can toggle this by setting this value to true or false.</p><p>I only really discovered these this year, and it's not something I new how to do before, and I figured Atom others might find it useful too.</p><p>Hope it helps, and happy searching! If you use Atom, and there are any other gems like this, feel free to add a comment below.</p><p> </p><p> </p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2017-06-10-planet-friendly-web-development/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Planet friendly web development with Python - a transcript</div></a>
+    
+    
+    <a class="next" href="/posts-output/2017-05-08-reviewing-your-options-for-setting-up-a-small-website/"><div class="nav-text"">Reviewing the options for setting up a small website, and ending up with WordPress</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+    
+
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>
