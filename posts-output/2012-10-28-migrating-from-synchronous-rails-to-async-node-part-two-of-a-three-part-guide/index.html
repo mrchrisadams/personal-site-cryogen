@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Migrating from synchronous rails, to async node – part two of a three part guide</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="This is the second of the three part series covering how to migrate from developing synchronously with Rails and Rspec, to asynchronously with Node, and Mocha. It picks up from the previous post, introducing Mocha syntax, and asynchronous testing.">
+
+<meta property="og:description" content="This is the second of the three part series covering how to migrate from developing synchronously with Rails and Rspec, to asynchronously with Node, and Mocha. It picks up from the previous post, introducing Mocha syntax, and asynchronous testing.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-two-of-a-three-part-guide/" />
+<meta property="og:title" content="Migrating from synchronous rails, to async node – part two of a three part guide" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Migrating from synchronous rails, to async node – part two of a three part guide</h1>
+        <div class="byline">
+            <span class="date">October 28, 2012</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>This is the second of the three part series covering how to migrate from developing synchronously with Rails and <a href="http://rspec.info/">Rspec</a>, to asynchronously with Node, and <a href="http://visionmedia.github.com/mocha/">Mocha</a>. It picks up from the previous post, introducing Mocha syntax, and asynchronous testing.</p><p>We covered before how we'd implement a class with instance methods in Ruby in the previous post.</p><p>Here's the simplified psuedo-code, for comparison to some coming javascript:</p><pre><code>class User do
+
+  def initialize
+    @db = Redis.new
+  end
+
+  def find_by_mac(mac)
+    @db.hgetall(mac) 
+  end
+
+end
+</code></pre><p>It looks a bit different when working with asynchronous javascript code.</p><h4 id="what-implementation-in-node-looks-like">What implementation in node looks like</h4><p>Because javascript doesn't have a class system, if we want something that acts a bit like a class, the idiomatic approach is to use functions, and use a bit of boilerplate code to make it easier to identify the function in stacktraces or logging when developing.</p><p>In javascript, instead of defining class methods or instance methods like we do with Ruby, we'd use <code>prototype</code> to inject new methods into the <code>User</code> function, so they're available to all instances of the <code>User</code> function in the system.</p><p>This chunk of code below is roughly analagous to declaring a <code>User</code> class in Ruby, mixing in methods from an <code>EventEmitter</code> module and giving it a <code>to_s</code> method, so there's a readable string returned when you try to log the class, or print it:</p><pre><code>function User() {
+  if(false === (this instanceof User)) {
+    return new User();
+  }
+  events.EventEmitter.call(this);
+}
+sys.inherits(User, events.EventEmitter);
+
+User.prototype.toString = function() {
+  return "User"
+}
+</code></pre><p>One thing - because we can rely on <code>User.prototype.toString</code> returning a value instantaneously, we can treat it as synchronous code, without thinking about callbacks, and using return the way we would in other languages.</p><h4 id="writing-asynchronous-functions">Writing asynchronous functions</h4><p>However, when we're working with asynchronous functions, things are different, and so far, we've only covered calling them, not defining them.</p><p>Here's a simplified version of an asynchronous function in use in the <code>User</code> function.</p><p>We have defined a function on the prototype of <code>User</code>, accepting two parameters:</p><ul><li><code>device_mac</code> - a String we use as our key when fetching a hash with Redis</li><li><code>callback</code> - the function we want to pass into <code>findByDevice</code> for later execution when Redis gives us our hash to execute operations on when it's done.</li></ul><p>In line with convention, our function <code>callback</code> itself takes two parameters, <code>err</code> and <code>res</code>. In our case, <code>res</code> is the hash given to us by Redis, if all is well, and <code>err</code> is what we get if something goes wrong with Redis when it's fetching our hash for us.</p><pre><code>User.prototype.findByDevice = function(device_mac, callback) {
+  db.hgetall(device_mac, function (err, res) {
+    callback(null, res);
+  })
+})
+</code></pre><h4 id="checking-this-against-our-test-code">Checking this against our test code</h4><p>It might be helpful to show these side by side, to put the implemented function on <code>User</code>, next to the function we're passing with our test to see what it is we're passing into <code>findByDevice</code>:</p><p>Our implemented function:</p><pre><code>User.prototype.findByDevice = function(device_mac, callback) {
+  db.hgetall(device_mac, function (err, res) {
+    callback(err, res);
+  })
+})
+</code></pre><p>The test:</p><pre><code>user.findByDevice('00:1e:c2:a4:d3:5e', function(err, res) {
+  if (err) {
+    // do something to recover
+  } else {
+    res.username.should.be.ok
+    res.username.should.equal('mrchrisadams')
+    done()
+  }
+})
+</code></pre><p>When we have the value from Redis, <code>callback(err, res)</code> is executing the function below, with our <code>res.username.should.be.ok</code> type assertions.</p><h3 id="when-you-need-to-call-async-functions-from-async-functions">When you need to call async functions from async functions</h3><p>Once you've got your head around passing functions for asynchronous code, you'll often find yourself working with multiple asynchronous functions, that you need to control the order of, so that data is passed from one to the other, to give you the result you want.</p><p>Here's the first actual implementation of the <code>findByDevice</code> function I ended up using in the project I'm working on.</p><p>We still pass in the <code>callback</code> function as our final parameter, but in order to return the value we want, we end up nesting a second call to <code>db.hgetall</code> inside the anonymous function we pass into our first call of <code>db.hgetall</code>, then use <code>callback(err, user)</code> to execute the function passed into <code>findByDevice</code>, and pass the results along to the code initially calling <code>user.findByDevice</code>.</p><pre><code>  User.prototype.findByDevice = function(device_mac, callback) {
+
+    db.hgetall(device_mac, function (err, device) {
+      if (err) { console.log(err) }
+      else {
+        if (device.hasOwnProperty('mac')) { 
+          db.hgetall(device.owner, function (err, user) {
+            if (err) { console.log(err)}
+            else{
+              callback(err , user)
+            }
+          });
+        }
+      }
+    });
+  }
+</code></pre><h3 id="avoiding-callback-hell">Avoiding callback hell.</h3><p>Even with just two asynchronous function calls, this isn't very readable.</p><p>Also, it seems that nearly every second developer on the planet playing with node has written their own callback handling library to make this easier to read and more maintainable.</p><p>In fact, there's a bewildering number of libraries out there that claim to make this problem much easier to understand.</p><p>In the next post, I'll introduce <code>async.js</code> a well documented library I've found fairly straightforward to work with, to help mitigate against callback hell.</p><!--  -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-one-of-a-three-part-guide/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Migrating from synchronous rails, to async node - part one of a three part guide</div></a>
+    
+    
+    <a class="next" href="/posts-output/2012-10-27-transparency-is-better-when-its-frequent/"><div class="nav-text"">Transparency is better when it&#39;s frequent</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

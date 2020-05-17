@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Vim and line height</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;ve switched to using MacVim lately as my editor, partly because I work on servers a fair amount in my job, and partly because well... lots of other people who are better programmers than me are generally singing it&#39;s praises, and the mix of Mac like UI polish, and power offered by Vim is an appealing combo  for me.">
+
+<meta property="og:description" content="I&#39;ve switched to using MacVim lately as my editor, partly because I work on servers a fair amount in my job, and partly because well... lots of other people who are better programmers than me are generally singing it&#39;s praises, and the mix of Mac like UI polish, and power offered by Vim is an appealing combo  for me.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2011-03-12-vim-and-line-height/" />
+<meta property="og:title" content="Vim and line height" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Vim and line height</h1>
+        <div class="byline">
+            <span class="date">March 12, 2011</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I've switched to using MacVim lately as my editor, partly because I work on servers a fair amount in my job, and partly because well... lots of other people who are better programmers than me are generally singing it's praises, and the mix of Mac like UI polish, and power offered by Vim is an appealing combo  for me.</p><p>One little thing tweak I'd recommend though if you're coming from Textmate, is to increase the default line-height when reading text. By default, I've found the to be squished together too tightly for my liking, making it less readable than I'm used to.</p><h3 id="fixable-with-two-words-and-one-number">Fixable with two words (and one number)</h3><p>Thankfully it's quite easy to fix: I found <a href="http://vim.1045645.n5.nabble.com/How-do-I-change-the-line-height-td1217884.html">this thread on the Mac Vim mailing list</a> which had a few tips on using the <code>set linespace</code> command in Vim. Just type in:</p><pre lang="vim">
+
+ set linespace=2
+
+</pre><p>...and once again, staring at text should become relatively easy on the eye again.</p><p>And of course, with this being , the next step is to put this setting into your dotfiles, and whichever computer you end up using, you'll only ever be a <code>git clone</code> away from having your settings just like how you're used to. Huzzah!</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2011-03-14-one-of-the-joys-of-being-on-the-vagrant-mailing-list/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">One of the joys of being on the Vagrant mailing list</div></a>
+    
+    
+    <a class="next" href="/posts-output/2011-03-12-starting-to-blog-again/"><div class="nav-text"">Starting to blog again</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: How to use get Git, Things and Dropbox to work together </title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;ve started using Things as a way to keep track of Things I&#39;ve committed to doing, or should be doing, and I&#39;m a big fan: it syncs nicely with an iPhone, and it&#39;s full of loads of lovely UI touches, like automatically loading the url, or email message URI you&#39;re looking at into the notes section when making a new to do item, or providing well thought out keyboard short cuts, or simply having a &quot;Today&quot; mode designed let you set targets just for today, and forgot about the rest of your ever growing todo pile.">
+
+<meta property="og:description" content="I&#39;ve started using Things as a way to keep track of Things I&#39;ve committed to doing, or should be doing, and I&#39;m a big fan: it syncs nicely with an iPhone, and it&#39;s full of loads of lovely UI touches, like automatically loading the url, or email message URI you&#39;re looking at into the notes section when making a new to do item, or providing well thought out keyboard short cuts, or simply having a &quot;Today&quot; mode designed let you set targets just for today, and forgot about the rest of your ever growing todo pile.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2011-01-16-how-to-use-git-things-and-dropbox-together-in-harmony/" />
+<meta property="og:title" content="How to use get Git, Things and Dropbox to work together " />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>How to use get Git, Things and Dropbox to work together </h1>
+        <div class="byline">
+            <span class="date">January 16, 2011</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I've started using <a href="http://culturedcode.com/things/">Things</a> as a way to keep track of <a href="http://culturedcode.com/things/">Things</a> I've committed to doing, or <em>should</em> be doing, and I'm a big fan: it syncs nicely with an iPhone, and it's full of loads of lovely UI touches, like automatically loading the url, or email message URI you're looking at into the notes section when making a new to do item, or providing well thought out keyboard short cuts, or simply having a "Today" mode designed let you set targets just for today, and forgot about the rest of your ever growing todo pile.</p><p>There's one shortcoming I've found though, and that's using <a href="http://culturedcode.com/things/">Things</a> with more than one computer - it isn't supported by out of the box, and using <a href="http://dropbox.com">Dropbox</a>, my normal way of sharing content between two computers, doesn't play too nicely with <a href="http://culturedcode.com/things/">Things</a> by default either.</p><p>However, on Cultured Code's own wiki there there some handy instructions for using Git to allow multiple instances of <a href="http://culturedcode.com/things/">Things</a> to share a single tasks database, but setting up a remote git server just to share todo's across computers seems like a git of an overkill - instead, I've adopted them to work with <a href="http://dropbox.com">Dropbox</a>, using a simple directory to share repos, instead of using a whole separate server.</p><p>In this post, I'll outline, how to set this up for yourself.</p><h3 id="what-were-going-to-do-here">What we're going to do here</h3><p>This is a fairly lengthy post, so I'll outline what we're doing first:</p><p>a) setup an a Git Repo in <a href="http://dropbox.com">Dropbox</a> that we push updates to.</p><p>b) Set up a clone of this repo on computer where the <a href="http://culturedcode.com/things/">Things</a> todo database is normally stored, and track changes in there.</p><p>c) Setup something like a cronjob using OS X's equivalent, <code>launchctl</code> to commit the changes every half hour, and push them to the main Git repo on dropbox.</p><p>Of we go then...</p><h4 id="setting-up-our-dropbox-git-repo">Setting up our <a href="http://dropbox.com">Dropbox</a> Git Repo</h4><p>First of all, we setup our repository in <a href="http://dropbox.com">Dropbox</a> like so:</p><pre lang="bash">
+  mkdir -p ~/Dropbox/Git-Repos/Things.git   
+</pre><p>It should look something like this in the finder:</p><p><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/01/git-repos.png"><img src="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/01/git-repos.png" alt="" title="git-repos" width="670" height="327" class="alignright size-full wp-image-416" /></a></p><p>Now we have a directory for our git repo, we need to initialise it, using a special flag, <code>--bare</code>. This creates a repo that's ready for us to push code to:</p><pre lang="bash">
+  cd Things.git
+  git --bare init
+</pre><p>Congrats, that's step one done!</p><h3 id="cloning-the-repo-into-we-we-put-our-things">Cloning the repo into we we put our Things</h3><p>Now we have somewhere to push code to, lets start pushing code. We're going to into the directory where <a href="http://culturedcode.com/things/">Things</a> data is stored, initialise a repo, and make our first commit:</p><pre lang="bash">
+  cd Library/Application\ Support/Cultured\ Code/Things
+  git init
+  git add .
+  git commit -a -m "initial commit"
+</pre><p>Okay, we've made our repo for <a href="http://culturedcode.com/things/">Things</a>, but we still don't have a way of getting content to the <a href="http://dropbox.com">Dropbox</a> repo, which is our canonical repo that we'd like to push code to. We need to tell git where the remote to push code to.</p><p>Normally with git, you'll push code to another server, but you can just as easily just push to another directory using git - this lets <a href="http://dropbox.com">Dropbox</a> handle the hard work of giving us distributed backups, and making this repo available to other computers:</p><pre lang="bash">
+  git remote add dropbox ~/Dropbox/Git-Repos/Things.git
+  git push dropbox master 
+</pre><p>Okay, so we've now created a central repo, we've created a local repo where we store our <a href="http://culturedcode.com/things/">Things</a>, and we've pushed our first chunk of code there too. Now we just need to automate this process, so we don't have to think about it in future.</p><h3 id="making-this-run-on-autopilot">Making this run on autopilot</h3><p>For this, we turn to <code>Launchd</code>, a tool on the mac to run commands automatically in the background, somewhat like a a newer version of cron. It's what starts all your programs on boot, but it's also used to run certain tasks at certain times of the day on a schedule.</p><p>What we're going to do here is use it to run a shell script every 30 minutes when the computer is awake, to commit the latest state of the file storing our <a href="http://culturedcode.com/things/">Things</a> data locally, then push that changeset to the main repo on Dropbox. Paste this code into a file called <code>thingssync.sh</code>.</p><pre lang="bash">
+  #!/bin/bash
+  DATE=`date`
+  REMOTE='dropbox'
+  cd ~/Library/Application\ Support/Cultured\ Code/Things
+  git pull $REMOTE master
+  git commit -a -m "Auto Sync - $DATE"
+  git push $REMOTE master
+</pre><p>The <code>git pull</code> line is there to keep this in sync with other instances of Things. The <code>git commit</code> line will aways give us a unique commit message, and the <code>git push</code>, makes sure we are pushing to the right branch.</p><p>Next, we need to breathe life into this script, by making it executable. We use a sometimes arcane unix command here, <code>chmod</code> (our <code>+x</code> part of the command gives it an executable bit, allowing it to be run by itself):</p><pre lang="bash">
+  chmod +x thingssync.sh   
+</pre><p>We need to put this newly enlivened script into a place where our <code>launchctl</code> daemons can actually access it, so let's put it into the user directory <code>usr/local/bin</code> - I tend to prefer this as a place for storing executable binaries than <code>/usr/bin</code>, because a) it means we don't have to start using <code>sudo</code> to make future changes, and b) it should be clearer that this isn't a core binary that would be clobbered by a software update from Apple.</p><pre lang="bash">
+  cp thingssync.sh /usr/local/bin/ 
+</pre><p>The final steps are creating a <code>launchctl</code> config file known as a property list, and putting it where the <code>launchctl</code> daemons normally look for config files, and then loading it in to <code>launchctl</code> to start running our cronjobs:</p><p>First paste this code into the property list file (more commonly referred to as a <code>plist file</code>) called <code>com.$(hostname).ThingsSync.plist</code>:</p><pre lang="xml">
+  
+  
+  <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN"
+    "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+
+
+  <plist version="1.0"><dict><key>Label</key><string>com.twelvestone.ThingsSync</string><key>Program</key><string>/usr/bin//local/thingsync.sh</string><key>RunAtLoad</key><true></true><key>StartInterval</key><integer>1800</integer></dict></plist>
+
+</pre><p>Then put it into the directory set aside for loading plist files, <code>~/Library/LaunchAgents</code>:</p><pre lang="bash">
+  mkdir -p ~/Library/LaunchAgents
+  cp com.$(hostname).ThingsSync.plist ~/LaunchAgents
+</pre><p>Our last step before we're finished, is to load the plist file in launchctl, so it knows of its existence, without use needing to reboot the machine:</p><pre lang="bash">
+  launchctl load ~/Library/LaunchAgents/com.$(hostname).ThingsSync.plist 
+</pre><p>Once this is done, we should now have our <a href="http://culturedcode.com/things/">Things</a> data being committed and pushed using git, every 30 mins while the computer is awake. If we want another machine set up work with this, we can clone from the repo in dropbox, follow steps 2 and 3, and at last, have multi-mac sync using <a href="http://culturedcode.com/things/">Things</a>.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2011-03-12-starting-to-blog-again/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Starting to blog again</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-09-19-discovering-the-jquery-data-method/"><div class="nav-text"">Discovering the jQuery data method</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

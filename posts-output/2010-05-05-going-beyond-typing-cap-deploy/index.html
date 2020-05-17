@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Going beyond typing cap deploy</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I mentioned earlier that if you don&#39;t use Capistrano too much, you might not be aware it&#39;s designed in such a way that it can be called happily from within Ruby code as well as being called on the command line.">
+
+<meta property="og:description" content="I mentioned earlier that if you don&#39;t use Capistrano too much, you might not be aware it&#39;s designed in such a way that it can be called happily from within Ruby code as well as being called on the command line.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-05-05-going-beyond-typing-cap-deploy/" />
+<meta property="og:title" content="Going beyond typing cap deploy" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Going beyond typing cap deploy</h1>
+        <div class="byline">
+            <span class="date">May 5, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I mentioned earlier that if you don't use <a href="www.capify.org" title="Capistrano">Capistrano</a> too much, you might not be aware it's designed in such a way that it can be called happily from within Ruby code as well as being called on the command line.</p><p>In fact, the snippets below from the <a href="http://rdoc.info/projects/jamis/capistrano" title="rdoc.info :: capistrano">rdoc pages for the project</a>, given idea of what's going on under the hood, when you call <code>cap deploy</code>.</p><p>Here's the command when we call it straight from the command line, within a capified project:</p><pre lang="bash">
+`cap deploy update_code -vvvv` 
+</pre><p>Now here's the same command, wrapped with a very lightweight ruby sprinkling of ruby, that wouldn't need us to supply any command line arguments ourselves.</p><pre lang="ruby">
+require 'capistrano/cli'
+  Capistrano::CLI.parse(%w(-vvvv -r config/deploy update_code)).execute!
+</pre><p>There's a whole lot of clever stuff happening when the <code>capistrano/cli.rb</code> is called, like instantiating a configuration object that stores the arguments for parsing, and serves as a base for other methods, tasks and even full-on recipes to be attached to.</p><p>The snippet above is roughly equivalent to the code below, if we wanted to be explicit bout what how we wanted things to be done.</p><pre lang="ruby">
+  require 'capistrano'
+  require 'capistrano/cli'
+  config = Capistrano::Configuration.new
+  config.logger_level = Capistrano::Logger::TRACE
+  config.set(:password) { Capistrano::CLI.password_prompt }
+  config.load "config/deploy"
+  config.update_code
+</pre><p>While writing this post, I consulted the <a href="www.capify.org" title="Capistrano">Capistrano</a> docs on <a href="http://rdoc.info/" title="rdoc.info">rdoc.info</a> repeatedly, and I think at long last, I'm starting to see the appeal of <a href="http://yardoc.org/" title="YARD 0.5.4 - The Longest">Yard</a> for documentation now. Now to find a fun little project to actually try it out on...</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-05-07-notes-on-chef-understanding-resources-and-providers/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Notes on Chef - Understanding Resources and Providers</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-05-04-making-arrays-with-ruby-without-those-pesky-commas/"><div class="nav-text"">Making arrays with ruby, without those pesky commas</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

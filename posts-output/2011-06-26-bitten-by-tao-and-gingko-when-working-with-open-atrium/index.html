@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Bitten by Tao and Gingko when working with Open Atrium</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="One problem when working with a subtheme of a subtheme, like when you&#39;re working with Open Atrium is that if you&#39;re not careful, it&#39;s easy to spend loads of time looking in the wrong theme wondering why your preprocess functions aren&#39;t working.">
+
+<meta property="og:description" content="One problem when working with a subtheme of a subtheme, like when you&#39;re working with Open Atrium is that if you&#39;re not careful, it&#39;s easy to spend loads of time looking in the wrong theme wondering why your preprocess functions aren&#39;t working.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2011-06-26-bitten-by-tao-and-gingko-when-working-with-open-atrium/" />
+<meta property="og:title" content="Bitten by Tao and Gingko when working with Open Atrium" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Bitten by Tao and Gingko when working with Open Atrium</h1>
+        <div class="byline">
+            <span class="date">June 26, 2011</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>One problem when working with a subtheme of a subtheme, like when you're working with Open Atrium is that if you're not careful, it's easy to spend loads of time looking in the wrong theme wondering why your preprocess functions aren't working.</p><p>The solution here is to always go back to the README.txt file on the first parent theme, (in this case Tao), and make sure you understand what's happening there, and that you can eliminate that one from any debugging you may have to do.</p><h4 id="read-the-readme-already">Read the README already</h4><p>In particular, I ended up spending ages today wondering why I couldn't pass in a classname for a template for some predefined css styles to be recognised by it, until working my way back up the theme ancestry, I finally came across the Tao readme.md file:</p><blockquote><p>The <code>$vars['attr']</code> variable is the standard way for adding any HTML attribute to the major containing element of the corresponding template. The
+<code>drupal_attributes($attr)</code> is used in each template to render attributes. For example, to add a class to a node, you would add the following to your
+subtheme's node preprocessor:</p><pre><code>$vars['attr']['class'] .= ' myclass';
+</code></pre></blockquote><p>Obvious in hindsight, but different from bolstering the usual $body_class string used in many other themes.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2011-07-23-playing-chicken-with-spotlight/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Playing chicken with spotlight on a fanless macbook</div></a>
+    
+    
+    <a class="next" href="/posts-output/2011-05-02-making-development-in-php-less-painful-with-logging/"><div class="nav-text"">Making development in PHP less painful with logging</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

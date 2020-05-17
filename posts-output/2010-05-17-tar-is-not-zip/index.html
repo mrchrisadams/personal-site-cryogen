@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Tar is not zip</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="Today, I had to package up some code that was residing on a remote server that I had ssh access to, to send to someone who was probably on a windows box.">
+
+<meta property="og:description" content="Today, I had to package up some code that was residing on a remote server that I had ssh access to, to send to someone who was probably on a windows box.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-05-17-tar-is-not-zip/" />
+<meta property="og:title" content="Tar is not zip" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Tar is not zip</h1>
+        <div class="byline">
+            <span class="date">May 17, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>Today, I had to package up some code that was residing on a remote server that I had ssh access to, to send to someone who was probably on a windows box.</p><p>This meant I had to use the <code>zip</code> tool, which I can never remember how to use, hence this memory jogging post.</p><p>Now if someone's using a Mac or is on Linux, the normal command line approach to to tar up a directory to send to someone goes like this:</p><pre lang="bash">
+tar -cvzf my_tarfile.tar.gz a_directory_to_tar and_otherone_here
+</pre><p>We're calling <code>tar</code> here, with the -create <em>(c)</em>, file <em>(f)</em>, compress <em>(z)</em> oh, and the verbose <em>(f)</em>, flag. Think of that string like saying to the computer: "create the tarfile <code>my_tarfile</code> putting it into a file we just created, verbosely, while compressing it, from <code>a_directory_to_tar</code> and <code>and_otherone_here</code>".</p><p>As commands go, the order feels a bit weird at first, but you get the hang eventually.</p><h4 id="where-zip-is-different">Where zip is different</h4><p>Using <code>zip</code> isn't too different really, but it you need to remember to tell it to zip recursively (why is this not default behaviour?). If we call command:</p><pre lang="bash">
+zip archive a_directory_to_tar and_otherone_here
+</pre><p>We'll end up with an rather useless empty file called <code>archive.zip</code>. We need to pass in the recursive flag</p><pre lang="bash">
+zip -r archive a_directory_to_tar and_otherone_here
+</pre><p>There's also no need to add the <code>.zip</code> file extension - this is added for you as a courtesy. Well, after that ridiculous non-recursive default shenanigans, frankly that's the least it could do...</p><p>Anyway, there you have it. The differences you between them if you don't want to dive into the manpages just to package up a folder for somebody, or look at this <a href="http://linux.about.com/od/commands/a/blcmdl1_zipx.htm" title="Example uses of the Linux Command zip">linux.about.com</a>.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-05-18-enjoying-banksimples-rhetoric/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Enjoying BankSimple&#39;s rhetoric</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-05-16-how-to-fix-a-wordpress-site-when-the-database-corrupts-on-you/"><div class="nav-text"">How to fix a Wordpress site when the database corrupts on you.</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

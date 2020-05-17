@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Making development in PHP less painful with logging</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I&#39;ve been looking for a nicer way to handle logging when developing with php than simply hitting F5 all the time and this approach here, if you&#39;re spending more than 30 mins writing something is a silly approach to debugging.">
+
+<meta property="og:description" content="I&#39;ve been looking for a nicer way to handle logging when developing with php than simply hitting F5 all the time and this approach here, if you&#39;re spending more than 30 mins writing something is a silly approach to debugging.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2011-05-02-making-development-in-php-less-painful-with-logging/" />
+<meta property="og:title" content="Making development in PHP less painful with logging" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Making development in PHP less painful with logging</h1>
+        <div class="byline">
+            <span class="date">May 2, 2011</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I've been looking for a nicer way to handle logging when developing with php than simply hitting F5 all the time and this approach here, if you're spending more than 30 mins writing something is a silly approach to debugging.</p><pre lang="php">
+
+  </pre><pre> 
+  $value = do_somestuff_with_code();
+  
+  var_dump($value);
+  </pre>
+
+<p>For a start, it assumes that we'll only ever access this code directly through a browser, and also, it means we can't see what was happening up to and around any kind of important event (like an silly error bringing down a your site) has occured, once it's left your machine.</p><p>These seem to be the options available that I've found:</p><h3 id="klogger---the-lightest-option"><a href="http://codefury.net/projects/klogger">Klogger</a> - the lightest option</h3><p><a href="http://codefury.net/projects/klogger">KLogger</a> is refreshingly simple - it's a tiny PHP class, that simply logs to a file, in a straightforward fashion. No browser integration, or logging to remote servers, (which we don't really need most of the time).</p><p>Here's what the code looks like:</p><pre lang="php">
+
+    $log = new KLogger ( "log.txt" , KLogger::INFO );
+    $log-&gt;LogInfo("Returned a million search results");	//Prints to the log file
+    $log-&gt;LogFATAL("Oh dear.");				//Prints to the log file
+    $log-&gt;LogDebug("x = 5");					//Prints nothing due to priority setting
+
+</pre><p>This will log the first two mesages to a file, but because we created the logging class using <code>KLogger::INFO</code> as our second param, we've set the logging level to be slightly less verbose than if we had set up using the <code>KLogger::DEBUG</code>.</p><h3 id="phpconsole---chrome-output-of-errors-instead-of-a-file">PHPConsole - chrome output of errors instead of a file.</h3><p>If you don't want to log to files, you may want to try out <a href="http://code.google.com/p/php-console/">PHPConsole</a>, a plugin for chrome that lets you output messages to the chrome console, instead of clogging up your displayed page with debug code.</p><pre lang="php">
+
+    require_once('PhpConsole.php');
+    PhpConsole::start();
+
+    // test
+    debug('test message');
+    debug('SELECT * FROM users', 'sql');
+    unkownFunction($unkownVar);
+</pre><p>This doesn't log to a file, so if you want anything more persistent, so you may want to look at the companion class for <code>PHPConsole</code>, <a href="http://code.google.com/p/lagger/">Lagger</a>.</p><h3 id="lagger---more-fully-featured-than-phpconsole">Lagger - more fully featured than PHPConsole.</h3><p>The PHP console also works with <a href="http://code.google.com/p/lagger/">Lagger</a>, another logging library that sounds very powerful, but left like way more code than I actually need.</p><p>For example, look at how much setup code we have here in the example - I'm sure load of it is useful, but before I've even started, I'm having to understand what an <code>EVENTSPACE</code> is, and start configuring it all:</p><pre lang="php">
+
+    define('LAGGER_BASE_DIR', '../library/');
+    function autoloadLaggerClasses($class) {
+            if(strpos($class, 'Lagger_') === 0) {
+                    require_once (LAGGER_BASE_DIR . str_replace('_', '/', $class) . '.php');
+            }
+    }
+    spl_autoload_register('autoloadLaggerClasses');
+    $laggerES = new Lagger_Eventspace();
+    $debug = new Lagger_Handler_Debug($laggerES);
+    $errors = new Lagger_Handler_Errors($laggerES);
+    $exceptions = new Lagger_Handler_Exceptions($laggerES);
+
+    $chromeConsole = new Lagger_Action_ChromeConsole();
+    $debug-&gt;addAction($chromeConsole);
+    $errors-&gt;addAction($chromeConsole);
+    $exceptions-&gt;addAction($chromeConsole);
+
+    function debug($message, $tags = null) {
+            $GLOBALS['debug']-&gt;handle($message, $tags);
+    }
+
+    // test
+    debug('debug message', 'some,test,tags');
+    echo $unkownVar;
+    unkownFunction();
+</pre><p>If I'm writing this much setup code, I might as well go the whole way and start using the logging tools provided by PEAR, the closest thing in PHP that I can find to Rubygems. Which brings me to...</p><h3 id="pear-log">PEAR Log</h3><p>Once you've got past the hassle of installing PEAR on your system properly (it felt like way more faff than I expected the first time when setting up PHPUnit), using PEAR Logger seems nice enough, and refreshingly, it feels like it's been written with a decent knowledge of concepts like the Singleton and Factory Patterns. The examples and documentation are fantastic, and out of the box it can also log to firebug. I haven't looked into logging to chrome yet, but [this post here suggests it can][wppearlog].</p><p>Here's some sample code for Pear Log, taken from [Irakli Nadareishvili's][] blog post about using it with Drupal.</p><pre lang="php">
+
+    require_once 'Log.php';
+    // use a lenient permission mask, and format entries accordingly
+    $logconf = array('mode' =&gt; 0775, 'timeFormat' =&gt; '%X %x');
+
+    // make sure only single log instance can ever exist, and output it
+    // to '/tmp/pear.log', passing in the log configuration object
+    $logger = &amp;Log::singleton('file', '/tmp/pear.log', 'ident', $logconf);
+
+    global $logger; //once per scope e.g. once per function body.
+
+    $logger-&gt;log ( "LOREM IPSUM TESTS. DO NOT TOUCH");
+
+    // print_r equivalent, to pretty print an object
+    $drw = new Drawing();
+    $logger-&gt;log ( var_export ($drw,true) );
+
+</pre><p>Interestingly, you can also create custom handlers for Pear Log, which would allow talking to a centralised error monitoring service like Hoptoad.</p><h3 id="summary">Summary</h3><p>I'd definitely recommend using a logging library over just dumping stuff onto a screen if you can help it - if you're new to logging, try out <a href="http://codefury.net/projects/klogger">Klogger</a>.</p><p>If you find yourself needing something larger, and you're prepared to spend a few minutes setting up PEAR (which you'd need for PHPUnit anyway), I'd recommand using PEAR Log - it's got a nice API, lots of other libraries are setup to use it already, and the documentation makes it easy to get started with.</p><p>[[Irakli Nadareishvili's]: http://www.freshblurbs.com/drupal-debugging-pear-logging
+[wppearlog]: http://www.turingtarpit.com/2009/05/wordpress-logger-a-plugin-to-display-php-log-messages-in-safari-and-firefox/#wptoc_0_0_2</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2011-06-26-bitten-by-tao-and-gingko-when-working-with-open-atrium/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Bitten by Tao and Gingko when working with Open Atrium</div></a>
+    
+    
+    <a class="next" href="/posts-output/2011-05-02-quick-note-working-with-child-themes-and-wordpress/"><div class="nav-text"">Quick note working with child themes and Wordpress</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

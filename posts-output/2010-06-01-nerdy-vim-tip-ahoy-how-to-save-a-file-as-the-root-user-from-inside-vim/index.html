@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Nerdy Vim tip ahoy! How to save a file as the root user from inside Vim</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="At work, I&#39;m always managing files while working on a remote server which invariably means I&#39;m stuck using Vim or Vi, and finding out after I&#39;ve made the my necessary changes to crucial config file,  I don&#39;t have the rights to actually save them - so I can see this tip by  catonmat saving lots of time in future. Thank you internets!">
+
+<meta property="og:description" content="At work, I&#39;m always managing files while working on a remote server which invariably means I&#39;m stuck using Vim or Vi, and finding out after I&#39;ve made the my necessary changes to crucial config file,  I don&#39;t have the rights to actually save them - so I can see this tip by  catonmat saving lots of time in future. Thank you internets!">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-06-01-nerdy-vim-tip-ahoy-how-to-save-a-file-as-the-root-user-from-inside-vim/" />
+<meta property="og:title" content="Nerdy Vim tip ahoy! How to save a file as the root user from inside Vim" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Nerdy Vim tip ahoy! How to save a file as the root user from inside Vim</h1>
+        <div class="byline">
+            <span class="date">June 1, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>At work, I'm always managing files while working on a remote server which invariably means I'm stuck using Vim or Vi, and finding out after I've made the my necessary changes to crucial config file,  I don't have the rights to actually save them - so I can see this tip by  <a href="http://www.catonmat.net/blog/top-ten-one-liners-from-commandlinefu-explained/" title="Top Ten One-Liners from CommandLineFu Explained - good coders code, great reuse">catonmat</a> saving lots of time in future. Thank you internets!</p><p>If you're using Vim, and you find that you need to save a file as root, the normal commands like <code>:wq</code> won't work. Instead you'll need to call this command:</p><pre lang="bash">
+  :w !sudo tee %
+</pre><h3 id="okay-thats-nice-what-is-it-actually-doing">Okay that's nice. What is it actually doing?</h3><p>The above command is basically saying <em>call the write command, passing in <code>sudo tee %</code> as the argument</em>. Now <code>sudo</code> we should be fairly comfortable with by now, leaving us just puzzling over what <code>tee</code> and <code>%</code>  actually mean. Thankfully, it's not too complex.</p><p>The <code>tee</code> command takes the the standard input (which in this case is the contents of the file we're editing), and writes that into the filename referenced by <code>%</code> which is a vim shorthard for the current filename.</p><h3 id="again-in-english-please">Again, in English please</h3><p>Sadly for these purposes, my first language for thinking in still English rather than Bash or Vim, so the only way I think I'll ever retain this particular gem is to think of this in the following terms:</p><blockquote><p>From within vim, take the contents of the file I'm editing, and as sudo, write it into the file I'm currently in, doing so as root.</p></blockquote><p>One day this will all be second nature to me when I'm a <em>real</em> programmer, but til then, I'll stick with Textmate - it's massively powerful, but when you come against these strange cases, it defers to OS X's much slicker handling of permissions issues.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-06-09-the-quickest-way-into-wordpress-when-youre-locked-out/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">The quickest way into Wordpress when you&#39;re locked out.</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-05-24-making-sense-of-rewritemaps-in-apache/"><div class="nav-text"">Making sense of Rewritemaps in Apache</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Setting environments with Rails: how Rake and Capistrano differ</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I keep forgetting this when I&#39;m developing with Rails, and while it&#39;s not massively hard to find, it IS annoying to keep looking up, so scribbling it here should commit it slightly more fully to memory">
+
+<meta property="og:description" content="I keep forgetting this when I&#39;m developing with Rails, and while it&#39;s not massively hard to find, it IS annoying to keep looking up, so scribbling it here should commit it slightly more fully to memory">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2009-07-30-setting-environments-with-rails-how-rake-and-capistrano-differ/" />
+<meta property="og:title" content="Setting environments with Rails: how Rake and Capistrano differ" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Setting environments with Rails: how Rake and Capistrano differ</h1>
+        <div class="byline">
+            <span class="date">July 30, 2009</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I keep forgetting this when I'm developing with Rails, and while it's not massively hard to find, it IS annoying to keep looking up, so scribbling it here should commit it slightly more fully to memory</p><p>If you want to make sure stuff happens in a certain environment with Rake, you need to make sure you set the environment before you call the command. You'll do this when setting up a database for testing.</p><pre># Drop the test database</pre><pre>RAILS_ENV=test rake db:drop</pre><pre># Clear database and reset schema to restart</pre><pre>RAILS_ENV=test rake db:reset</pre><pre># Recreate the staging database, but only migrate it to version 3</pre><pre>RAILS_ENV=staging rake db:reset VERSION=3</pre><p>However, If you're using Capistrano, and multistage environments (and you really should, it makes live, way, way better) you'll need to set it after calling the command initial, but before you pass the argument like so:</p><pre># deploy an app the beta environment</pre><pre>cap beta deploy</pre><pre># setup the staging environment before deployment</pre><pre>cap staging deploy:setup</pre><p>Rake comes first, and cap comes second.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2009-08-06-virtual-servers-false-alarms/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Virtual servers and false alarms</div></a>
+    
+    
+    <a class="next" href="/posts-output/2009-07-25-fixing-old-gits/"><div class="nav-text"">Fixing old gits</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

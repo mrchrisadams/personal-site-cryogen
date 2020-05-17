@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Making the Wordpress source code something you&#39;d want to read</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="If you develop with Wordpress at all, you&#39;re likely to spend a fair chunk of your time wading through source code, and poring over the Wordpress Codex when something isn&#39;t working the way you expected, or when you&#39;re coding new features.">
+
+<meta property="og:description" content="If you develop with Wordpress at all, you&#39;re likely to spend a fair chunk of your time wading through source code, and poring over the Wordpress Codex when something isn&#39;t working the way you expected, or when you&#39;re coding new features.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-05-11-making-the-wordpress-source-code-something-youd-want-to-read/" />
+<meta property="og:title" content="Making the Wordpress source code something you&#39;d want to read" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Making the Wordpress source code something you&#39;d want to read</h1>
+        <div class="byline">
+            <span class="date">May 11, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>If you develop with <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a> at all, you're likely to spend a fair chunk of your time wading through source code, and poring over the <a href="http://codex.wordpress.com/" title="Wordpress Codex">Wordpress Codex</a> when something isn't working the way you expected, or when you're coding new features.</p><p>If you're working with Ruby and (assuming the projects you're working on has some documentation in the first place), tools like <a href="http://railsapi.com/" title="Rails Searchable API Doc">RailsAPI</a> or <a href="http://rdoc.info" title="rdoc.info">rdoc.info</a> have made browsing source code, and getting an idea of how various classes or objects make up project a fairly simple process now.</p><p>Thing is, moving from there to <a href="http://drupal.org/" title="Drupal">Drupal</a>, with its insistence on not having any useful examples in its documentation, or <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a>, where the surrounding Codex docs are great, but where the source code less as easy to browse, has always felt clunky by comparison.</p><p>Thankfully, <a href="http://twitter.com/harrym">Harry</a> and <a href="http://twitter.com/holizz">Tom</a> at the <a href="http://dextrousweb.com/lab-notes/" title="Lab Notes :: The Dextrous Web">Dextrous Web</a> have worked out a clever hack that makes using the docs on <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a>'s just as nice an experience as it is on a normal ruby project, by passing all source code through <a href="http://www.stack.nl/~dimitri/doxygen/" title="Source code documentation generator tool">Doxygen</a>, then passing <em>that</em> through the same all singing, all dancing , autocompletin' sdoc templates as used on RailsAPI, giving us all the slickness we'd come to associate with a well written Ruby project, but on a workhorse platform like <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a>.</p><p>Here's how to to get your own <a href="http://wpdocs.labs.thedextrousweb.com/" title="WordPress API">browsable docs like these</a>, local to your machine for speedy offline reference.</p><h4 id="install-doxygen">Install Doxygen</h4><p><a href="http://www.stack.nl/~dimitri/doxygen/" title="Source code documentation generator tool">Doxygen</a> is a tool you can use to generate actual documentation the comments in <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a>'s existing code base. If you're on a mac, and using macports, you can install it like so (you may need to sudo install these, depending on how your system is set up):</p><pre lang="bash">
+# if you're on a mac...
+port install Doxygen #if you're using macports
+port install Doxygen #if you're using homebrew
+
+# or if you're using linux ...
+yum install Doxygen #if you're using a CentoOS/Redhat 
+apt-get install Doxygen #if you're using a Debian/Ubuntu 
+</pre><h4 id="fetch-the-wordpress-source-code">Fetch the Wordpress source code.</h4><p>We need to pull down this code so when we call the next step we have everything we need to create the documentation, then pass it through sdoc to create the docs.</p><pre lang="bash">
+
+git clone git://github.com/dxw/wordpressapi.git
+cd wordpressapi
+gem install wpdoc
+git clone git://github.com/dxw/geshi.git
+git clone git://github.com/dxw/[Wordpress][].git
+ln -s wordpress/wp-includes
+ruby update_codex.rb
+
+</pre><h4 id="generate-your-own-docs">Generate your own docs</h4><p>This step takes a long time (as in more than half an hour on my black new macbook) , and uses a fair old chunk of CPU power too, so don't be alarmed if this seems to take longer than you're used to.</p><pre lang="bash">
+ruby doxydoc.rb
+</pre><h4 id="bookmark-the-document-index-page">Bookmark the document index page</h4><p>The docs you're after will be created in the <code>docs/</code> directory in the wordpressapi project; you'll find the index page at <code>docs/</code> , presenting a page of all the classes that make up <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a>, with an autocomplete listing of every class, method and file used in the project, with links to the source code on <a href="http://github.com" title="Secure source code hosting and collaborative development - GitHub">github.com</a>, locally, and where relevant, to the [Wordpress Codex][3].</p><h4 id="browse-the-source">Browse the source</h4><p>Have a quick browse - you also have keyboard shortcuts for navigating around the code, you'll I guarantee that the easier access to the source code will help you learn something new about using <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a>, without even trying, and be navigating through the the guts of the <a href="wordpress.org" title="Wordpress Main Site">Wordpress</a> source like a pro in no time.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-05-16-not-quite-sure-what-im-doing-with-this-site/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Not quite sure what I&#39;m doing with this site</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-05-10-avoiding-that-face-palm-moment-with-logrotate/"><div class="nav-text"">Avoiding that Face Palm moment with Logrotate</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

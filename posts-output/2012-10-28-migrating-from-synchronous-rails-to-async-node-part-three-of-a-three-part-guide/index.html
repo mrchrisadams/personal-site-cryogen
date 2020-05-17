@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Migrating from synchronous rails, to async node – part three of a three part guide</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="In the last post, I implemented an asynchronous function that wrapped a call to Redis, using an existing node library, node-redis.">
+
+<meta property="og:description" content="In the last post, I implemented an asynchronous function that wrapped a call to Redis, using an existing node library, node-redis.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-three-of-a-three-part-guide/" />
+<meta property="og:title" content="Migrating from synchronous rails, to async node – part three of a three part guide" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Migrating from synchronous rails, to async node – part three of a three part guide</h1>
+        <div class="byline">
+            <span class="date">October 28, 2012</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>In the last post, I implemented an asynchronous function that wrapped a call to Redis, using an existing node library, <code>node-redis</code>.</p><p>The final implementation introduced nested asynchronous method calls, and the code ended up looking a bit like this, even after simplifying somewhat:</p><pre><code>  User.prototype.findByDevice = function(device_mac, callback) {
+
+    db.hgetall(device_mac, function (err, device) {
+      if (err) { console.log(err) }
+      else {
+        if (device.hasOwnProperty('mac')) { 
+          db.hgetall(device.owner, function (err, user) {
+            if (err) { console.log(err)}
+            else{
+              callback(err , user)
+            }
+          });
+        }
+      }
+    });
+  }
+</code></pre><p>Now the code took this form, because we relied on the results of one asynchronous function to make the second one - if you take a second to imagine how hard to read this would look at four, five or six levels of nesting, you'll quickly understand why so many developers are writing their own callback management libraries to make this easier to work with.</p><h3 id="introducing-asyncjs">Introducing async.js</h3><p>The one I've found most promising so far is <code>async.js</code>, a fairly comprehensive utility module that provides a number of different ways to ensure that asynchronous functions are either called in a specific order, or run in parallel, aggregating their results before allowing code to continue and so on.</p><p>In this case, I'll be focusing on the use of <code>waterfall</code>, a function in the <code>async</code> module that lets you pass in an array of functions to be called in order, passing the results of one to the next, until a final callback passes the final result on to the code initially calling the function <code>async</code> was called from within.</p><pre><code>  User.prototype.findByDevice = function(device_mac, callback) {
+
+    async.waterfall([
+
+        // fetch our device first
+        function(cb){
+          db.hgetall(device_mac, function (err, res) {
+            cb(null, res);
+          })
+        },
+
+        // new we have our device, fetch the user
+        function(device, cb){
+          db.hgetall(device.owner, function (err, res) {
+            cb(err, res);
+          })
+        }
+
+        // return our user object
+      ], function (err, user) {
+        callback(err, user)
+      });
+
+  }
+</code></pre><p>In our case, we have our function <code>findByDevice</code> on <code>User</code>, and we have passed an array containing our two asynchronous functions as the first argument to <code>async</code>, then passing a final anonymous function to return our user object.</p><p>To be more specific, just like the code above, we take our mac address string as the first parameter to <code>findByDevice</code>, and the function to execute as our second parameter, <code>callback</code>.</p><p>We then make the asynchronous call to Redis to fetch a device object, passing in <code>cb</code> as our function to execute once Redis has given us our hash, to pass it to the next function in the array.</p><p>We then use the <code>owner</code> property of the device object passed into the second function, to make another call to fetch our user, again passing in <code>cb</code>, to execute once Redis has given us a user object, to pass to the final function.</p><p>Once we have the user object, we can pass it on to the code that called <code>findByDevice</code> with <code>callback(err, user)</code>, completing the asynchronous callback chain.</p><h4 id="more-than-just-waterfalls">More than just waterfalls</h4><p>Of course, just because we now know how to execute asynchronous functions in a set order, one after the other like we're used to doesn't mean we <em>should</em> always do so.</p><p>One of the advantages of node's asynchronous style is that it allows the <a href="https://github.com/caolan/async#parallel">parallel execution</a> of code, so the same operations could be applied to the an array of values at the same time, getting around bottlenecks, but then only passing on the results once all the operations have been completed.</p><p>Alternatively, this allows us to pop values onto <a href="https://github.com/caolan/async#queueworker-concurrency">queues</a>, with set numbers of workers, to work through them, without needing a dedicated worker process like you would with in Rails for, when using <a href="https://github.com/collectiveidea/delayed_job">delayed_job</a> or <a href="https://github.com/defunkt/resque">resque</a>.</p><h4 id="doesnt-all-this-seem-like-a-lot-of-work-though-the-ruby-you-showed-me-first-was-much-shorter-and-easier-to-read">Doesn't all this seem like a lot of work though? The ruby you showed me first was much shorter, and easier to read</h4><p>In a word, yes.</p><p>Node isn't a magic bullet, and although it's popular, if you're doing a basic CRUD app, there are often very good reasons to choose Rails, Django over Node and Express.</p><p>That being said, it pays to understand your options when choosing a particular technology to solve the problem facing you. Also, if you're a fan of behaviour driven development, it's good to know that such an approach is possible with this technology, and, once you've got your head around async programming, there's value in knowing that there some well developed tools to help you apply these techniques to both server-side, and client-side javascript.</p><p>If anything's not clear in this series, please let me know - I've sunk a good few hours into these posts now, to make it easier to understand async node development if you're used to sync ruby development, and I'd really like to know where I can improve these for future visitors.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2012-11-25-betting-against-the-creation-of-google-and-open-data/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Betting against the creation of Google, and open data</div></a>
+    
+    
+    <a class="next" href="/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-one-of-a-three-part-guide/"><div class="nav-text"">Migrating from synchronous rails, to async node - part one of a three part guide</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: The ForkBomb Tattoo</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="This doesn&#39;t count for much, but I think this is one of the cleverest, geekiest, most elegant tattoos I&#39;ve ever seen. Carving an Apple, Cisco or Nike Logo onto your body? That&#39;s really quite sad. But this is something different:">
+
+<meta property="og:description" content="This doesn&#39;t count for much, but I think this is one of the cleverest, geekiest, most elegant tattoos I&#39;ve ever seen. Carving an Apple, Cisco or Nike Logo onto your body? That&#39;s really quite sad. But this is something different:">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-05-23-the-forkbomb-tattoo/" />
+<meta property="og:title" content="The ForkBomb Tattoo" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>The ForkBomb Tattoo</h1>
+        <div class="byline">
+            <span class="date">May 23, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>This doesn't count for much, but I think this is one of the cleverest, geekiest, most elegant tattoos I've ever seen. Carving an <a href="http://www.flickr.com/groups/apple_tattoo/pool/">Apple</a>, <a href="http://www.readwriteweb.com/archives/the_30_best_and_worst_web_tech_tattoos.php">Cisco</a> or <a href="http://www.flickr.com/photos/bigmoontattoo/2514998242/">Nike Logo</a> onto your body? That's really quite sad. But this is something different:</p><p><a href="http://www.flickr.com/photos/silveiraneto/4033340711/"><img class="alignnone" title="Fork Bomb" src="http://farm3.static.flickr.com/2422/4033340711_543ef81df0_b.jpg" alt="" width="354" height="614" /></a></p><h3 id="why-do-i-like-it">Why do I like it?</h3><h4 id="i-think-its-about-as-attractive-as-a-code-type-tattoo-is-going-to-get">I think it's about as attractive as a code type tattoo is going to get</h4><p>The proportions are well balanced, and there's a nice visual rhythm in there - this is largely down to the choice Bitstream Sans Mono, the typeface used for this. This typeface is a well loved font in programmer circles, who spend hours staring at monospace fonts - a lovely touch.</p><h4 id="its-actually-executable-code">It's actually executable code</h4><p>This particular incantation has its own story too - this cryptic combination of symbols is a working example of a <em>forkbomb</em>, and was presented as a piece of open source art back in 2002, by<a href="http://en.wikipedia.org/wiki/Jaromil"> Denis Jaromil Rojo</a>, an Italian Rastafarian developer and media activist now residing in Amsterdam. A forkbomb is a piece of self replicating code that when called, start forking itself relentlessly, until it  consumes all the resources on a computer system, rendering it unusable.</p><p>For the terminally curious, here's how it works:</p><pre lang="bash">
+
+:()      # define ':' -- whenever we say ':', do this:
+{        # beginning of what to do when we say ':'
+    :    # load another copy of the ':' function into memory...
+    |    # ...and pipe its output to...
+    :    # ...another copy of ':' function, which has to be loaded into memory
+         # (therefore, ':|:' simply gets two copies of ':' loaded whenever ':' is called)
+    &amp;    # disown the functions -- if the first ':' is killed,
+         #     all of the functions that it has started should NOT be auto-killed
+}        # end of what to do when we say ':'
+;        # Having defined ':', we should now...
+:        # ...call ':', initiating a chain-reaction: each ':' will start two more.
+</pre><p>More on <a href="http://en.wikipedia.org/wiki/Fork_bomb">Forkbombs</a> here.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-05-23-discovering-the-walrus/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Discovering the Walrus</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-05-21-rvm-and-textmate-in-harmony/"><div class="nav-text"">RVM and Textmate in harmony</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

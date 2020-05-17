@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Quick note working with child themes and Wordpress</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="Continuing my adventures in the world of Wordpress theming today, I stumbled across a minor gotcha when working with Child Themes and writing code using functions.">
+
+<meta property="og:description" content="Continuing my adventures in the world of Wordpress theming today, I stumbled across a minor gotcha when working with Child Themes and writing code using functions.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2011-05-02-quick-note-working-with-child-themes-and-wordpress/" />
+<meta property="og:title" content="Quick note working with child themes and Wordpress" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Quick note working with child themes and Wordpress</h1>
+        <div class="byline">
+            <span class="date">May 2, 2011</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>Continuing my adventures in the world of Wordpress theming today, I stumbled across a minor gotcha when working with Child Themes and writing code using functions.</p><p>When you're using <a href="http://www.farinspace.com/wpalchemy-metabox/" title="Dimas' meta-box">Dimas Begunoff</a>'s WPAlchemy framework for making metaboxes, the code examples refer to creating a sample meta box like so:</p><pre lang="php">
+
+  $custom_metabox = new WPAlchemy_MetaBox(array
+  (
+    'id' =&gt; '_custom_meta', // underscore prefix hides fields from the custom fields area
+    'title' =&gt; 'My Custom Meta',
+    'template' =&gt; TEMPLATEPATH . '/custom/simple_meta.php',
+  ));
+
+</pre><p>This won't work with child themes, because the TEMPLATEPATH will be pointing to the template path of the parent theme. As all your code is (or should be...) in the child theme, you won't be able to get to the template.</p><h3 id="you-need-stylesheetpath">You need STYLESHEETPATH</h3><p>If you're using a child theme, you'll need to use a different constant instead, called <code>STYLESHEETPATH</code>, which rather confusingly gives you the equivalent path, for the child theme:</p><pre lang="php">
+
+  $custom_metabox = new WPAlchemy_MetaBox(array
+  (
+    'id' =&gt; '_custom_meta', // underscore prefix hides fields from the custom fields area
+    'title' =&gt; 'My Custom Meta',
+    'template' =&gt; STYLESHEETPATH . '/custom/simple_meta.php',
+  ));
+
+</pre><p>Found via <a href="http://old.nabble.com/Re%3A-TEMPLATEPATH-in-child-themes-p23527283.html" title="Nabble">nabble</a>.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2011-05-02-making-development-in-php-less-painful-with-logging/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Making development in PHP less painful with logging</div></a>
+    
+    
+    <a class="next" href="/posts-output/2011-03-14-one-of-the-joys-of-being-on-the-vagrant-mailing-list/"><div class="nav-text"">One of the joys of being on the Vagrant mailing list</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

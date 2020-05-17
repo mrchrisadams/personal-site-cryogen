@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: A step by step by step guide to fixing a hacked wordpress site</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="I had to do a bit of server-side troubleshooting on Wordpress site recently, that had been hacked. It&#39;s not a popular site, and hardly gets any traffic, and was simple enough to fix, but it&#39;s worth noting the actions I had to take.">
+
+<meta property="og:description" content="I had to do a bit of server-side troubleshooting on Wordpress site recently, that had been hacked. It&#39;s not a popular site, and hardly gets any traffic, and was simple enough to fix, but it&#39;s worth noting the actions I had to take.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2012-07-08-a-step-by-step-by-step-guide-to-fixing-a-hacked-wordpress-site/" />
+<meta property="og:title" content="A step by step by step guide to fixing a hacked wordpress site" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>A step by step by step guide to fixing a hacked wordpress site</h1>
+        <div class="byline">
+            <span class="date">July 8, 2012</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>I had to do a bit of server-side troubleshooting on Wordpress site recently, that had been hacked. It's not a popular site, and hardly gets any traffic, and was simple enough to fix, but it's worth noting the actions I had to take.</p><p>I'm trying to find a mental model that fits this process, to make it easier to remember what to do in future, so I figured I'd share my approach here:</p><h3 id="1-stop-the-bleeding">1) Stop the bleeding</h3><p>In this case, the hack had been down to a malicious script being able to sign into the site, using the <code>admin</code> credentials, and a dictionary-attacking the password until the weak password was broken. A simple fix for this is to change the password to something stronger, and be change the name of the admin account, so it's no longer such a target for scripts.</p><p>Changing the password for an user account is pretty mundane, but changing the name of a user account is slightly more exotic.</p><p>Here's a handy mysql snippet for this, once you're logged in at the mysql shell:</p><pre lang="sql">
+    update wp_users set user_nicename='new.harder.to.hack.name' where user_nicename='admin';
+    update wp_users set user_login='new.harder.to.hack.name' where user_login='admin';
+</pre><h3 id="2-clean-the-infection">2) Clean the infection</h3><p>Now you have this, it's worth looking for the culprit. In many cases, you'll see an unfamiliar php file in the <code>uploads</code> directory. It'll often have a url like this: <code>img_112.php</code>, and you might be able to see it in server logs as a request like this:</p><pre>
+    http://hackedsite.co.uk/wp-content/img_112.php?SOMESTRING_OF_PARAMETERS_
+</pre><p>Unless you have very good reasons to have executable php files in your upload diretories, it's best to remove any.</p><h3 id="3-keep-it-clean">3) Keep it clean</h3><p>Now that you've stopped further attacks, and removed any malicious scripts from within your site, it's a good time to lock down permissions on any files on your site. If you're running Wordpress under a virtual private server, the snippet below should work fine, if you run them from within the <code>wordpress directory</code>:</p><pre lang="bash">
+  find /path/to/your/wordpress/install/ -type f -exec chmod 644 {} \;
+</pre><p>If you're like me and can never remember the syntax for the <code>find</code> command, here's a sort of translation of what it means:</p><blockquote><p>starting within the directory "/path/to/your/wordpress/install/", start a <em>find</em>, looking only for results of the type file (shown by <code>-type f</code>). Then, for each result, execute the command (using the <code>-exec</code> flag) <code>chmod 644</code> on them, to restrict how the files can be modified on the server.</p></blockquote><p>Now that we've done files, we'll need to to the directories too:</p><pre lang="bash">
+  find /path/to/your/wordpress/install/ -type d -exec chmod 755 {} \;
+</pre><p>This is almost the same as the previous command except that a) we're only looking for directories (specified by the <code>-type d</code> flag), and we're allowing slightly more relaxed permissions, because we're dealing with directories instead files  (<code>chmod 755</code> versus <code>chmod 644</code>).</p><p>Once we've cleaned up permissions on our site, now we can turn to some plugins to help automate some of the drudgework of keeping a site sufficiently secure. I've found <a href="http://l3rady.com/projects/wordpress-file-monitor-plus/">WordPress File Monitor Plus</a> useful for detecting malicious changes to your site in future, and if you can see past the rather bombastic name, [Ultimate Security Checker][2], gives a number of simple steps you can follow to further harden up your site.</p><h4 id="is-this-even-vaguely-coherent">Is this even vaguely coherent?</h4><p>So there we have it - (hopefully) a simple enough explanation of how you might fix a site after it's been compromised by some opportunist or semi automated hacking scripts, and a useful way to to think about site in future.</p><h4 id="where-to-learn-more">Where to learn more</h4><p>If you're interested in looking into this in more detail, right now this presentation below seems to the best one I can find about the subject. And as ever, [the Codex][3] is wealth of useful information</p><p>[embed]http://www.slideshare.net/williamsba/wordpress-security-1709496[/embed]</p><!-- links --><p>[2]: (http://wordpress.org/extend/plugins/ultimate-security-checker/ "WordPress - Ultimate Security Checker WordPress - Plugins")
+[3]: http://codex.wordpress.org/Hardening_WordPress</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2012-07-30-dalton-on-why-slow-growth-is-desirable/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Dalton on why slow growth is desirable,</div></a>
+    
+    
+    <a class="next" href="/posts-output/2012-06-27-opening-up-skype-with-webrtc/"><div class="nav-text"">Opening up Skype with webRTC</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

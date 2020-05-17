@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: How I use Twilio to forward phone calls for me into the internet</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="As I&#39;ve mentioned in previous posts, I am a new resident of Berlin, after living almost all of my life in London. Also, almost all my family is still in Blighty, as are almost all of the people I work with in my day job.">
+
+<meta property="og:description" content="As I&#39;ve mentioned in previous posts, I am a new resident of Berlin, after living almost all of my life in London. Also, almost all my family is still in Blighty, as are almost all of the people I work with in my day job.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2014-05-31-how-i-use-twilio-to-forward-phone-calls-for-me-into-the-internet/" />
+<meta property="og:title" content="How I use Twilio to forward phone calls for me into the internet" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>How I use Twilio to forward phone calls for me into the internet</h1>
+        <div class="byline">
+            <span class="date">May 31, 2014</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>As I've mentioned in previous posts, I am a new resident of Berlin, after living almost all of my life in London. Also, almost all my family is still in Blighty, as are almost all of the people I work with in my day job.</p><p>In a given day, I'll rely on <a href="http://www.google.com/hangouts/">Google Hangouts</a>, <a href="skype.com">Skype</a>, <a href="irccloud.com">IRC</a>, <a href="https://slack.com/">Slack</a> and <a href="http://hipchat.com/">Hipchat</a> to stay in touch, and conduct video and voicecalls on my ipad or laptop. When I need to call UK numbers, my easiest option is to use Skype to call, using SkypeOut (now simply referred to as "<a href="http://www.skype.com/en/features/call-phones-and-mobiles/">Calls to mobiles and landlines</a>")</p><h3 id="getting-around-unreliable-connections">Getting around unreliable connections</h3><p>Sometimes however, you if you're somewhere with a poor upstream connection to the internet, the sound quality on voice calls like can become unacceptably poor.</p><p>This tends to happen more with Skype than Hangouts for me during the week, but is common enough to make using it at times, untenable.</p><p>If you don't have a landline where you are, then you're reduced to relying on a mobile phone to call another country, which is rarely a cheap way to call someone, nor for them to call you.</p><h3 id="bouncing-phone-calls-into-the-internet-with-twilio">Bouncing phone calls into the internet with Twilio</h3><p>Recently, I tried to solve this problem with Twilio, and it's worked well enough so far to share here. At a glance, here the steps you need to take to do this:</p><ol><li>Buy a UK number with Twilio</li><li>Register with Twilio to make international calls</li><li>Setup a forward inside Twilio to your local phone number</li><li>Receive phone calls on the UK number, and pick up on your German mobile</li></ol><p>There is a cost to this - you pay a monthly fee to have a UK number, and you still need to foot the bill for forwarding the phone call to your mobile in your own country. However, this is usually cheaper making a single phone call of any length from a mobile to another country.</p><h3 id="interested-heres-how-to-do-it-for-yourself">Interested? Here's how to do it for yourself.</h3><h4 id="buy-a-uk-number">Buy a UK number</h4><p>Once you're registered with Twilio, the first step is to buy a number, for the country you want to people to call:</p><p><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2014/05/Twilio-User-Account-Phone-Numbers-Available-GB-Local.png"><img src="http://chrisadams.me.uk/wordpress/wp-content/uploads/2014/05/Twilio-User-Account-Phone-Numbers-Available-GB-Local-1024x621.png" alt="Twilio User - Account Phone Numbers Available GB Local" width="604" height="366" class="alignnone size-large wp-image-977" /></a></p><h4 id="register-for-international-calls">Register for international calls</h4><p>At this point, it's possible to forward calls people make to this number, to another number in the same country. If you try to forward a phone call to a phone number in another country, you'll end up with a failed call, and the twilio logs will show an <code>Warning: 13227 - Dial: No International Authorization</code> error.</p><p>You need to authorise international calls by filing a ticket - this part is a bit clunky, but your request is answered quickly. I file one evening, and had it approved the following morning.</p><h4 id="set-up-a-forward-to-your-local-phone-number">Set up a forward to your local phone number</h4><p>Assuming you've been able to activate international calls, the next step is to use the Twilio API itself to connect someone calling your UK twilio number to a phone of your choice.</p><p>To do this, I suppose you <em>could</em> write a simple Sinatra style webapp, that posts to relevant endpoints of Twilio's API, then deploy that to heroku for free.</p><p>An easier way to do this is, is to just use a <a href="https://www.twilio.com/labs/twimlets">Twimlet</a>, a pre-built PHP app, that uses the Twilio API to make a phone call to the number you set, when you fill in the details at the <a href="https://www.twilio.com/labs/twimlets/forward">Twilio Forward page</a>.</p><p>Your twimlet url generated should look something like the number below:</p><pre><code># My real number has been replaced with xxx's in this example
+http://twimlets.com/forward?PhoneNumber=+49160xxxxxxxx&amp;CallerId=+447974xxxxxx
+</code></pre><p>You add it to your number listing when logged into Twilio, like so:</p><p><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2014/05/Phone-Number-442033225777-Dashboard-Twilio.png"><img src="http://chrisadams.me.uk/wordpress/wp-content/uploads/2014/05/Phone-Number-442033225777-Dashboard-Twilio-1024x788.png" alt="Phone Number 442033225777 | Dashboard | Twilio" width="604" height="464" class="alignnone size-large wp-image-978" /></a></p><h4 id="receive-phone-calls-on-the-number-and-pick-up-whereever-you-redirect-it-to">Receive phone calls on the number, and pick up whereever you redirect it to</h4><p>Now, when someone rings the number you registered with Twilio, it triggers a POST to the Twilio API endpoint responsible for starting a phone call, and connects the caller to the number you've specified to dail.</p><p>Because you're relying on a voice network, rather than unpredictable wifi, phone calls should have a more consistent sound quality, and it becomes much easier and cheaper for people to call you if they need to.</p><p>This whole exercise assumes the mobile you're forwarding calls to is in an area of reliable mobile coverage - but assuming a) you have that, b) there's no convenient bolt-on tariff for your phone contract and c) roaming and international calls are still unreasonably expensive, this seems to work fairly well so far.</p><p>So now you know.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2014-06-08-how-to-update-boxen-on-your-mac-with-changes-from-upstream/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">How to update Boxen on your mac with changes from upstream</div></a>
+    
+    
+    <a class="next" href="/posts-output/2014-05-30-mostly-settled-in-berlin/"><div class="nav-text"">Mostly settled in Berlin</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

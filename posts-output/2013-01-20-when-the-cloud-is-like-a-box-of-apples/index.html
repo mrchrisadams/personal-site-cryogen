@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: When the cloud is like a box of apples</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="Last week, I gave a talk at LDNdevops, about the steps that you can take as a devops engineer to make your cloud computing more planet friendly, and while I was there, watching Sam Pointer&#39;s talk about using Chef to manage thousands of virtual machines, I learn of an interesting side effect of Amazon providing abstract virtual machines through its compute cloud AWS, rather than selling actual servers.">
+
+<meta property="og:description" content="Last week, I gave a talk at LDNdevops, about the steps that you can take as a devops engineer to make your cloud computing more planet friendly, and while I was there, watching Sam Pointer&#39;s talk about using Chef to manage thousands of virtual machines, I learn of an interesting side effect of Amazon providing abstract virtual machines through its compute cloud AWS, rather than selling actual servers.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2013-01-20-when-the-cloud-is-like-a-box-of-apples/" />
+<meta property="og:title" content="When the cloud is like a box of apples" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>When the cloud is like a box of apples</h1>
+        <div class="byline">
+            <span class="date">January 20, 2013</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>Last week, I gave a talk at LDNdevops, about the <a href="http://lanyrd.com/2013/ldndevops-january/sccfwf">steps that you can take as a devops engineer to make your cloud computing more planet friendly</a>, and while I was there, watching Sam Pointer's talk about using Chef to manage thousands of virtual machines, I learn of an interesting side effect of Amazon providing abstract virtual machines through its compute cloud AWS, rather than selling actual servers.</p><h3 id="when-you-have-a-box-of-apples-some-are-going-to-be-bad">When you have a box of apples, some are going to be bad</h3><p>Back when I used to work at Headshift, I remember having a conversation with a friend of mine, <a href="http://www.headshift.com/our-blog/author/stuart-cullum">Stu Calum</a> telling me how he had heard AWS being described as something like create of apples - Individually they're fine, but every once in a while you come across a bad apple<sup id="fnref-1"><a class="footnote-ref" href="#fn-1">1</a></sup>.</p><p>So whenever you're working out how you might build out infrastructure, you need to expect that one or more nodes will be will blink out of existence with little or no warning, on a more regular basis than that provided by more traditional colocation, or virtual private servers.</p><h3 id="not-so-much-bad-apples-as-good-great-okay-bad-and-terrible-apples">Not so much bad apples, as good, great, okay, bad and terrible apples</h3><p>One thing that that really leapt out at me was how Sam in his talk mentioned how they use Chef to provide an audit of the 'quality' of their machines by benchmarking how well the difference virtual machine instances they have compare to the baseline in a graphical fashion.</p><p>They do this because while we as customers are buying "large", "small", "medium" and "extra large" virtual machines, we have no real idea what the actual hardware they run really is, or where the metal lies in a typical server lifecycle. So on one day you could be spinning up a load of aging servers, that are being sold as "medium" VM instances but are much slower than normal, but another day you might luck out and spin up some virtual machines running on superfast, shiny new hardware, giving you loads of free performance.</p><p>This graph they use helps them visualise the relative performance of the machines they're using, by comparing the area underneath the graph:</p><p><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2013/01/bang_for_buck.png"><img src="http://chrisadams.me.uk/wordpress/wp-content/uploads/2013/01/bang_for_buck.png" alt="bang_for_buck" width="800" height="600" class="alignnone size-full wp-image-861" /></a></p><p>In a given corner if the area is large, they have a load of fast machines, and they're better off holding on to them. If the corner is smaller, it may be worth switching those VMs off, and spinning up some new ones to do the same job the old ones were doing, in the hope that <a href="http://blog.sam-pointer.com/2013/01/10/bang-for-your-buck-on-amazon-ec2">they give more bang for their buck</a>.</p><p>There's more available in this <a href="https://www.usenix.org/system/files/conference/hotcloud12/hotcloud12-final40.pdf">published paper on USENIX here</a>, and if you find this interesting, you'd do well to follow <a href="http://blog.sam-pointer.com/">Sam Pointer's blog</a> - it's full of little gems like this.</p><div class="footnotes"><hr /><ol><li id="fn-1"><p>To give full credit, I think this description came from <a href="http://atalanta-systems.com/">Stephen Nelson Smith of Atalanta Systems</a>,</p><a href="#fnref-1" class="footnote-backref">↩</a></li></ol></div>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2013-02-21-introducing-ux-thursdays/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Introducing UX Thursdays</div></a>
+    
+    
+    <a class="next" href="/posts-output/2012-12-27-ted-nyman-on-remote-working/"><div class="nav-text"">Ted Nyman on remote working</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

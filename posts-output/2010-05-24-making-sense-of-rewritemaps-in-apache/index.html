@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Making sense of Rewritemaps in Apache</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="Title: Using RewriteMap to ease site migrations
+Date: 2010-05-21 20:43:11">
+
+<meta property="og:description" content="Title: Using RewriteMap to ease site migrations
+Date: 2010-05-21 20:43:11">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-05-24-making-sense-of-rewritemaps-in-apache/" />
+<meta property="og:title" content="Making sense of Rewritemaps in Apache" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Making sense of Rewritemaps in Apache</h1>
+        <div class="byline">
+            <span class="date">May 24, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>Title: Using RewriteMap to ease site migrations
+Date: 2010-05-21 20:43:11</p><p><em>This post outlines the approach we took when migrating content from one site to another on a recent project, as the documentation available currently this could be much clearer, and this is clearly a problem that others working on the web are likely to have in the near future, as people realise just how how much you can do with Wordpress, and move more sites to it.</em></p><p>As mentioned before, we had to move a fairly large site across from one content management system based around ColdFusion a modified version of Wordpress this month, making sure we didn't break any the links amassed over the last few years the site had been online.</p><p>If we were dealing with just a few urls, we could do this by hand using Apache's more well known [RewriteRule][] directives, but with than 5500 links to preserve, this approach just isn't realistic. We need a different tool for this.</p><h3 id="enter-rewritemaps">Enter RewriteMaps</h3><p>Fortunately, Apache RewriteMaps are designed specifically for these situations. As you'd expect from the name they allow you to map one url to another without needing to write the same ReWriteRule snippets thousands of times.</p><p>Anything that cuts repetition reduces the chances for typos to slip in, and makes it easier to maintain in the long run, so RewriteMaps are a handy tool to add to your reportoire.</p><h3 id="how-to-use-a-rewritemap">How to use a ReWritemap</h3><p>I find it helps to think of using a rewrite map as a 4 step process:</p><ul><li><p>create the rewritemap</p></li><li><p>define the rewritemap inside an apache conf file</p></li><li><p>define what conditions you want to test the map against</p></li><li><p>define what you want to do with the return value of the rewritemap, and redirect accordingly</p></li></ul><p>Now, in more detail....</p><h4 id="create-the-rewritemap">Create the rewritemap</h4><p>The mapping file can be as simple a plain text file with pairs of values, separated by at least one space, like so:</p><pre lang="bash">
+
+/content/press		        22
+/content/jobs		        23
+/content/contact		    24
+/content/accessibility		25
+
+</pre><p>Whitespace isn't significant, so you can happily go for readability here.</p><h4 id="define-the-rewritemap">Define the RewriteMap</h4><p>Now that we have a mapping files we need to let Apache know that we'd like to us it:</p><pre lang="apache">
+
+    RewriteEngine on
+
+    RewriteMap url_rewrite_map txt:/srv/html/domain.com/domain.migration.map
+
+</pre><p>We've told Apache to switch on its url rewriting features (<code>RewriteEngine On</code>), and declared the urls the text file as the patterns to match against.</p><h4 id="define-what-conditions-you-to-test-the-map-against">Define what conditions you to test the map against</h4><p>Now it's time to actually use the rewritemap:</p><pre lang="apache">
+
+    RewriteCond ${url_rewrite_map:$1|NOT_FOUND} !NOT_FOUND 
+
+</pre><p>This condition definitely needs some unpacking.</p><p>RewriteConditions in Apache are designed as tests to see if a RewriteRule should be applied, depending on whether the expression they're testing returns true. RewriteMaps work by passing a value into them, like how we have with <code>S1</code>, but they also a fallback value in case an expression didn't match any of the patterns in the url map file declare earlier, which should explain that the <code>NOT_FOUND</code> is doing inside the curly braces.</p><p>So far, we're testing if we have a corresponding value for the captured pattern passed in (which would return true), and returning NOT_FOUND if there's nothing there.</p><p>However, we <em>only</em> want to apply the url rewrite if the we have a match in the map, and as it stands both values return will return 'true' here. This will create an infinite rewriting loop, so we need to add a ! operator to check if the value is NOTFOUND or not, and only rewrite the rules if the result is <code>!NOTFOUND</code>.</p><p>Yes, we really did just test for <code>not NOTFOUND</code>.</p><p>I'm sorry - I have a real problem with this; it's extremely confusing to read, and utterly unintuitive, as well as just being bad english.</p><p>Sadly, this seems to have become a fairly common Apache htaccess idiom, and right now, I can't think of another way to express this that works using Apache's syntax. Any other suggestions would be <em>gratefully</em> accepted.</p><p>Define what to do with the results</p><pre lang="apache">
+
+    RewriteRule ^(.*) http://domain.com/?p=${url_rewrite_map:$1} [R=301]
+
+</pre><p>This rule uses a regular expression to match the request sent to us, (that's the <code>^(.*)</code> part), and then passes that through the urlmap, so a path for a content item with a unique of id "34", but a previous path along the lines of "/press/importantpressrelease" would have its numeric id returned again, giving us a rewritten url like "http://domain.com/?p=34".
+In our case, the unique numeric id was the only constant we could rely during migration from one system to another; thankfully Wordpress has some handy built-in rules of it's own that can convert these numeric id requests into nice friendly urls, along the lines of "http://domain.com/press/2009/06/10/important-press-release".</p><p>We're using a permanent 301 redirect flag with this ReWriteRule (that's the <code>[R=301]</code>), so that search engine spiders know to follow the link, retaining any search engine mojo we may have had before..</p><h3 id="conclusion">Conclusion</h3><p>So, using the url mapping here, we now have a sufficiently fast way to preserve the integrity of old urls, without locking us into this structure for the future, without diving too deep into the Apache directive rabbit hole.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-06-01-nerdy-vim-tip-ahoy-how-to-save-a-file-as-the-root-user-from-inside-vim/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Nerdy Vim tip ahoy! How to save a file as the root user from inside Vim</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-05-23-discovering-the-walrus/"><div class="nav-text"">Discovering the Walrus</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

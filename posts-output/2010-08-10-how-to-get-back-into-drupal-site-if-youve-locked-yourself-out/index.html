@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: How to get back into Drupal site if you&#39;ve locked yourself out</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="A few posts back, I shared a one liner to get you back into a Wordpress site if you manage to lock yourself out, and forget your database password.">
+
+<meta property="og:description" content="A few posts back, I shared a one liner to get you back into a Wordpress site if you manage to lock yourself out, and forget your database password.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2010-08-10-how-to-get-back-into-drupal-site-if-youve-locked-yourself-out/" />
+<meta property="og:title" content="How to get back into Drupal site if you&#39;ve locked yourself out" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>How to get back into Drupal site if you&#39;ve locked yourself out</h1>
+        <div class="byline">
+            <span class="date">August 10, 2010</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>A few posts back, I shared a one liner to get you back into a Wordpress site if you manage to lock yourself out, and forget your database password.</p><p>Assuming you've access to the command line and drush, you can pull a similar trick with Drupal, by typing the following query in:</p><pre lang="bash">
+    drush sql-query "update users set pass=md5('NEWPASSWORD') where uid = 1;"
+</pre><h3 id="whats-happening-here">What's happening here?</h3><p>The first thing we're doing is calling drush sql-query, a sub-command of drush.</p><p>If you haven't used Drush yet, you really, really should. It totally transforms how you work with Drupal, by making the kinds of tasks you had to do manually through the website possible from a commandline, which means yes, you can get up to all kinds of handy scripting shenanigans.</p><p>As you might expect drush sql-query lets you pass a single arbitrary query to the database described in your site's settings file, without you needing to fish the credentials out yourself. Here's our query too now:</p><pre lang="mysql">
+ update users set pass=md5('NEWPASSWORD') where uid = 1;  
+</pre><p>In short, we're <em>updating</em> the <em>users</em> table in the Drupal database, by <em>setting</em> the _pass_word value for the the first user id (<em>where uid=1</em>), to a <em>md5 hash</em> of the phrase <em>NEWPASSWORD</em>.</p><p>If you don't haves access to drush, nor the command line, but you still can change a file over SFTP, you can to the same by adding a snippet like this on to the site:</p><pre lang="php">
+  $doh_forgot_my_password = db_query("update users set pass=md5('NEWPASSWORD') where uid = 1;");
+</pre><p>Of course you really should be paramaterizing this like so:</p><pre lang="php">
+  $doh_forgot_my_password = db_query("update users set pass=md5('%s') where uid = %d;", array("NEWPASSWORD", "1") );
+</pre><p>But this given the fact that this snippet should only existing in a template for 15-20 seconds <em>at the most</em> you'd probably be forgiven for taking the short cut...</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2010-08-14-no-need-to-type-your-password-with-apache/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">There&#39;s no need to type your password when you restart Apache, really...</div></a>
+    
+    
+    <a class="next" href="/posts-output/2010-08-08-how-to-setup-snow-leopard-lamp-for-debugging/"><div class="nav-text"">How to setup Snow Leopard for LAMP development and debugging</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

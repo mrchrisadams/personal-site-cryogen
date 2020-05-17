@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: How to set up a debugger with mod_rails/Passenger</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="Anyone who&#39;s worked on the web will know easy it is to end up constantly refreshing pages to see if the content delivered from say, a database driven site is the indeed content you want to show.">
+
+<meta property="og:description" content="Anyone who&#39;s worked on the web will know easy it is to end up constantly refreshing pages to see if the content delivered from say, a database driven site is the indeed content you want to show.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2009-04-28-how-to-set-up-a-debugger-with-mod_railspassenger/" />
+<meta property="og:title" content="How to set up a debugger with mod_rails/Passenger" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>How to set up a debugger with mod_rails/Passenger</h1>
+        <div class="byline">
+            <span class="date">April 28, 2009</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>Anyone who's worked on the web will know easy it is to end up constantly refreshing pages to see if the content delivered from say, a database driven site is the indeed content you want to show.</p><p>This is one approach, and while simple to understand, there are often other approaches available to this.</p><p>One example is using the ruby debugger, and break points in your code to inspect and control what is happening at each step, to see what variables are available.</p><p>This, combined with the more traditional tools for debugging a view using <code>@object.inspect</code> or <code>debug(@object)</code> methods make fixing bugs less of a pain.</p><p>As many of us transition from using Mongrel as our server to Passenger, we find ourselves missing this useful tool. This post outlines one way to setup a debugger for Passenger.</p><h3 id="putting-a-debugger-back-in-passenger">Putting a debugger back in Passenger</h3><p>Before people started using Passenger for handling rails requests, using the ruby debugger was simply a case of adding <code>debugger</code> statements in the code, and then starting the Mongrel or Webrick with <code>script/server --debugger</code>.</p><p>When the code hit a <code>debugger</code> statement, the console would drop into an interactive debugger, and all would be well with the world.</p><p>Passenger currently doesn't allow an easy way to use the debugger straight out of the box, so we'll have to make a few changes to the code in our own environments, and use a gem called ruby-debug if we want this behaviour again.</p><h3 id="add-ruby-debug">Add ruby-debug</h3><p>We're actually using a gem called ruby debug - this gives us a powerful remote debugger, to inspect code - it does load of other interesting things, but in this case we're only interested in a subset of the features here.</p><pre lang="bash">
+
+`sudo gem install ruby-debug`
+
+</pre><h3 id="add-code-to-use-ruby-debug-when-you-hit-a-debugger-statement">Add code to use ruby debug when you hit a debugger statement</h3><p>Just like how we restart Passenger using the touch tmp/restart.txt file, the nicest way I've found to switch on the debugger comes from the ominously titled <a href="http://duckpunching.com/passenger-mod_rails-for-development-now-with-debugger" title="duck_punching Passenger (mod_rails) for development. Now with debugger!">duck_punching</a> weblog. It involves adding a <code>rake</code> task to create a <code>debug.txt</code> text file, and adding a snippet of code to your development.rb config file:</p><pre lang="ruby">
+
+    if File.exists?(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
+      require 'ruby-debug'
+      Debugger.wait_connection = true
+      Debugger.start_remote
+      File.delete(File.join(RAILS_ROOT,'tmp', 'debug.txt'))
+    end
+</pre><p>This snippet checks for the existence of a debug.txt in the <code>tmp</code> directory of the main Rails directory, and if it's there, it opens a connection to connect to for debugging.</p><p>And here's there restart task for rake:</p><pre lang="ruby">
+    desc "Restarts passenger if in debug mode"
+    task :restart do
+      system("touch tmp/restart.txt")
+      system("touch tmp/debug.txt") if ENV["DEBUG"] == 'true'
+    end
+</pre><p>To run in debug mode, you just pass the constant DEBUG in while calling the rake task like so:</p><pre lang="ruby">
+    rake restart DEBUG=true
+</pre><h3 id="sprinkle-in-your-debugger-statements">Sprinkle in your debugger statements</h3><p>We can now add the <code>debugger</code> statements where we want the breakpoints in our code for us to inspect.</p><h3 id="open-a-rdebug-session">Open a rdebug session</h3><p>Now we can finally open our ruby debug session, using the -c switch to start our client connection.</p><pre lang="ruby">
+    rdebug -c
+
+</pre><p>Because we're connecting to the same machine as we're running rails on, it defaults to localhost, but we can connect to other remote machines too.</p><h3 id="gotcha---remember-to-reboot">Gotcha - Remember to reboot!</h3><p>Once you've finished your command line debugging session, and exited the debugger, you won't be able to start a new sessions without calling the <code>rake:restart</code> command with the <code>DEBUG=true</code> values.</p><p>Now that you have this set up, take a look at this <a href="http://railscasts.com/episodes/54-debugging-with-ruby-debug" title="Railscasts - Debugging with ruby-debug">Railscast by Ryan Bates</a> or this one by <a href="http://brian.maybeyoureinsane.net/blog/2007/05/07/ruby-debug-basics-screencast/" title="Local Insanity - Ruby Debug Basics [screencast]">Brian Donovan</a> to get an idea of just how useful the ruby debugger is.</p><p>Patrick Lenz has another <a href="http://www.sitepoint.com/article/debug-rails-app-ruby-debug/" title="Debug Your Rails App With ruby-debug [Ruby &amp; Rails]">really helpful article</a> that goes in depth with the commands available to you during a debug session - I found it incredibly useful, and I can't recommend it highly enough.</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2009-05-03-frustrating-and-cryptic-ruby-idioms-1-of-a-series/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Frustrating and Cryptic Ruby Idioms (#1 of a series)</div></a>
+    
+    
+    <a class="next" href="/posts-output/2009-04-27-letter-loungin/"><div class="nav-text"">Letter loungin&#39;</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

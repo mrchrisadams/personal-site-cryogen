@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Migrating from synchronous rails, to async node - part one of a three part guide</title>
+        
+<meta name="keywords" content="">
+
+<meta name="description" content="In my spare time, I&#39;ve recently been working with a few codebases that either are written in, or use enough code written in nodejs, that make me keen to have some kind of testing framework in place to help put the same kinds of safety nets in place that I&#39;m used to working with on Chef, Sinatra or Rails projects.">
+
+<meta property="og:description" content="In my spare time, I&#39;ve recently been working with a few codebases that either are written in, or use enough code written in nodejs, that make me keen to have some kind of testing framework in place to help put the same kinds of safety nets in place that I&#39;m used to working with on Chef, Sinatra or Rails projects.">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-one-of-a-three-part-guide/" />
+<meta property="og:title" content="Migrating from synchronous rails, to async node - part one of a three part guide" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Migrating from synchronous rails, to async node - part one of a three part guide</h1>
+        <div class="byline">
+            <span class="date">October 28, 2012</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><p>In my spare time, I've recently been working with a few codebases that either are written in, or use enough code written in nodejs, that make me keen to have some kind of testing framework in place to help put the same kinds of safety nets in place that I'm used to working with on Chef, Sinatra or Rails projects.</p><p>After losing a couple of weekends looking into BDD style development with node, and getting my head around asynchronous coding concepts, I think I've settled on an approach that feels enough like Rspec to feel comfortable enough to use for future server-side js development.</p><p>It's way too much for a single post, so I'll be sharing the first of a three part series of posts here, to help other Ruby developers used to synchronous development with <a href="http://rspec.info/">Rspec</a> adjust to asynchronous development using <a href="http://visionmedia.github.com/mocha/">Mocha</a>, the closest thing I can find to it in node-land right now.</p><p>In this post I'll cover how <a href="http://visionmedia.github.com/mocha/">Mocha</a> syntax compares to <a href="http://rspec.info/">Rspec</a>, then the next post I'll cover implementing the code to pass these Mocha tests. In the third post, I'll touch on how to keep asynchronous code halfway manageable in node, and avoid getting stuck in callback hell.</p><h3 id="how-we-do-it-in-ruby">How we do it in Ruby</h3><p>I'm going to use a side project I've been hacking on for a few months, to show how I'd add a new class to wrap calls around a persistence layer to provide a degree of encapsulation, abstracting away the database technology from external interface for the class.</p><p>In this case, with my User class, I want to have a method that finds me a user, stored as a hash in Redis, keyed on the mac address of the laptop or iphone they're using.</p><p>The tests I'd write might look a bit like this pseudocode here:</p><pre><code>describe 'User' do
+
+  before(:each) do 
+    redis = Redis.new
+    # create an entry in redis with the key "99:aa:44:33:01:3r", 
+    # and the hash below
+    redis.hmset("99:aa:44:33:01:3r", {
+      :username    =&gt; "mrchrisadams",
+      :name        =&gt; "Chris"
+      :email       =&gt; "wave@chrisadams.me.uk",
+      :mac_address =&gt; "99:aa:44:33:01:3r"
+    })
+  end
+
+  it 'fetches the user object' do 
+    u = User.new
+    c = u.find_by_mac('99:aa:44:33:01:3r')
+    c.name.should be('mrchrisadams')
+  end
+
+end
+</code></pre><p>I use the <code>before</code> block to store a hash inside redis, setting a few extra values on it, and then later on, in the <code>it 'fetches the user object'</code> block, I create an instance of my <code>User</code> class, and call the <code>find_by_mac</code> method to fetch me the hash I just stored in Redis.</p><p>The implemntation code in Ruby, might look like this:</p><pre><code>class User do
+
+  def initialize
+    @db = Redis.new
+  end
+
+  def find_by_mac(mac)
+    @db.hgetall(mac) 
+  end
+
+end
+</code></pre><p>So far so good. This is synchronous code, and feels comfortable, and is easy enough to work with.</p><h3 id="doing-this-in-node">Doing this in node</h3><p><em>For future reference, the <a href="https://github.com/mrchrisadams/herenow/blob/users/test/herenow/users.js">completed mocha test code is here on github</a>, and the <a href="(https://github.com/mrchrisadams/herenow/blob/users/herenow/db/user.js">completed implementation code is here too</a>.</em></p><p>Now, lets try to take the same approach in node, to see how different this looks, but also to see what we need to be aware of when learning to think in asynchronous terms.</p><p>So, lets be good developers and try to write out test code first, in Mocha. I'll paste the lot, then go through the interesting bits piece by piece.</p><pre><code>describe('User', function() {
+  describe('#findByDevice', function() {
+
+    beforeEach(function(done) {
+
+      db.hmset("mrchrisadams", {
+        name: "Chris Adams",
+        username: "mrchrisadams",
+        devices: ["00:1e:c2:a4:d3:5e"],
+        email_address: "wave@chrisadams.me.uk"
+      }, done);
+
+    })
+
+
+    it('should fetch the user for that mac', function(done) {
+      var user = new User();
+      user.findByDevice('00:1e:c2:a4:d3:5e', function(err, res) {
+        if (err) {
+          console.log(err)
+        } else {
+          res.username.should.be.ok
+          res.username.should.equal('mrchrisadams')
+          done()
+        }
+      }); // find by device
+    }) // should fetch the user for that mac
+  })
+})
+</code></pre><p>So first of all, much of the syntax is looks quite like Rspec. We have nested <code>describe</code> and <code>it</code> blocks, and even the assertion syntax is familiar, with nice, readable <code>should</code>s, <code>be</code>s and <code>equal</code>s all around.</p><p>However, there are a few important additions here that we need, to allow for the asynchronous nature of node.</p><p>First of all, lets look at the <code>beforeEach</code> function:</p><pre><code>beforeEach(function(done) {
+
+  db.hmset("mrchrisadams", {
+    name: "Chris Adams",
+    // object vars edited out for brevity
+  }, done);
+})
+</code></pre><p>In this case, we're making a call to db, an instance of <code>node-redis</code> a popular redis client library for node, that is completely asynchronous.</p><p>If we tried using the bog-standard <code>beforeEach</code> function like this, when working with an asynchronous library (not the lack of <code>done</code>), it would look like the code below:</p><pre><code>  beforeEach(function() {
+    db.hmset("mrchrisadams", {
+      name: "Chris Adams",
+      // object vars edited out for brevity
+    });
+  })
+</code></pre><p>Had we done this, node would have zipped to the <code>beforeEach</code> function, started it, then returned straight away, racing ahead trying to run the tests below it, without waiting for our Redis setup steps to be finished.</p><p>Now Redis is fast, but you can't rely on that to make sure your tests are set up before you run them, and this code would have given us at best unpredictable results, but more likely, fails across the board.</p><h4 id="done-to-the-rescue"><code>done</code> to the rescue</h4><p>Here's how we do it when working asynchronously with <a href="http://visionmedia.github.com/mocha/">Mocha</a>.</p><pre><code>beforeEach(function(done) {
+
+  db.hmset("mrchrisadams", {
+    name: "Chris Adams",
+    // object vars edited out for brevity
+  }, done);
+})
+</code></pre><p>The difference this time round is that we're passing in <code>done</code>, a function that exists to stop the tests running until our Redis setup steps are finished, and we're in a state for testing.</p><p>We have to take this approach too for the tests itself, in our <code>it</code> function:</p><pre><code>it('should fetch the user for that mac', function(done) {
+  var user = new User();
+  user.findByDevice('00:1e:c2:a4:d3:5e', function(err, res) {
+    if (err) {
+      // do something to recover
+    } else {
+      res.username.should.be.ok
+      res.username.should.equal('mrchrisadams')
+      done()
+    }
+  }); // close findByDevice
+}) // close should fetch the user for that mac
+</code></pre><p>Here, we're doing something very different to the ruby approach of storing returned values from methods in variables, then testing the value of those.</p><h4 id="our-first-real-exposure-to-continuation-passing-style">Our first real exposure to "continuation-passing style"</h4><p>Look at this line in paticular:</p><pre><code>user.findByDevice('00:1e:c2:a4:d3:5e', function(err, res)
+</code></pre><p>Understanding this here for me was the key to getting my head around this initially very alien syntax. If you're having trouble with the shift from sync to async, the closest thing in typical sync ruby code might be something like this line, where you set the varibale <code>res</code> then use it for testing assertions against:</p><pre><code>res = user.findByDevice('00:1e:c2:a4:d3:5e)
+res.should be_okay
+</code></pre><p>Now there's two important things here to remember when working with node:</p><ol><li>Because we're working asynchronously, we only want to run out assertions once we know we have the values back from the call we just made</li><li>We are working with javascript, passing functions around to execute the code inside them at a later date, both common, and necessary.</li></ol><p>So, our solution to the asynchronous problem, is to pass in a <em>function with the assertions we care about inside it</em>, as a parameter to our <code>findByDevice</code> call on the user object.</p><p>So, what we're saying here is: "go fetch the results of <code>findByDevice</code>, with the paramters <code>00:1e:c2:a4:d3:5e</code>, and here's the function I'd like you to execute when you're done, please":</p><pre><code>  user.findByDevice('00:1e:c2:a4:d3:5e', function(err, res) {
+    if (err) {
+      // do something to recover
+    } else {
+      res.username.should.be.ok
+      res.username.should.equal('mrchrisadams')
+      done()
+    }
+  })
+</code></pre><p>You might be confused by the two parameters <code>err</code>, and <code>res</code>.</p><p>There is a generally accepted convention when coding asynchronously in node, to make it possible to pass the result from one callback to another. Passing in a function which itself has the parameters <code>error</code>, and <code>result</code> (or some variaton on the name, like <code>err</code>, and <code>res</code>) as the last argument going into a method call is idiomatic node javascript now, and is often referred to as the continuation-passing style.</p><p>It's crucial to understand it, because you won't get far without it.</p><h4 id="where-does-done-fit-into-this">Where does <code>done()</code> fit into this?</h4><p>You might notice a call to <code>done()</code> on the last line of the function we're passing in, after the assertions.</p><p><a href="http://visionmedia.github.com/mocha/">Mocha</a>, when you pass in <code>done</code> to a testing block, doesn't know when the test finished, so will wait for <code>done()</code> to be called, before deciding if that particular <code>it</code> block has failed or passed.</p><h3 id="now-onto-the-implementation-in-node">Now onto the implementation in node</h3><p>So we've run thorugh how <a href="http://visionmedia.github.com/mocha/">Mocha</a> works now, and how it compares to <a href="http://rspec.info/">Rspec</a>, and we've seen how we rely on anonymous functions to run our assertions on the results of asynchronous functions.</p><p>(As an aside, anonymous functions are simply functions with no name -  just the keyword, parameters, the code to execute them. They looks like <code>function(err, res) { // do stuff }</code>, instead of <code>function hasSomeName(err, res) { // do stuff }</code> ).</p><p>It's worth re-reading the above, until you're really comfortable with the concepts, as the next section, implementation is unfortunately pretty messy.</p><!-- links -->
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-three-of-a-three-part-guide/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">Migrating from synchronous rails, to async node – part three of a three part guide</div></a>
+    
+    
+    <a class="next" href="/posts-output/2012-10-28-migrating-from-synchronous-rails-to-async-node-part-two-of-a-three-part-guide/"><div class="nav-text"">Migrating from synchronous rails, to async node – part two of a three part guide</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>

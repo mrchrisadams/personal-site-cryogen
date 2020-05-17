@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Chris Adams Blog: Playing chicken with spotlight on a fanless macbook</title>
+        
+<meta name="keywords" content="">
+
+<meta property="og:url" content="http://blog.chrisadams.me.uk/posts-output/2011-07-23-playing-chicken-with-spotlight/" />
+<meta property="og:title" content="Playing chicken with spotlight on a fanless macbook" />
+<meta property="og:type" content="article" />
+
+        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Oxygen:300,400,700|Inconsolata" rel="stylesheet">
+        <link href="/css/normalize.css" rel="stylesheet" type="text/css" />
+        <link href="/css/blog.css" rel="stylesheet" type="text/css" />
+        <link href="/css/lotus-highlightjs.min.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body>
+        <aside id="sidebar">
+            <div id="logo">
+                <a title="Chris Adams Blog" href="/">
+                <div class="text desktop-and-tablet-only">Chris Adams Blog</div>
+                <div class="text mobile-only">Chris Adams Blog</div>
+                </a>
+            </div>
+
+            <nav id="sidebar-links">
+                <nav id="menucont">
+                    <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+                    <label for="menu-checkbox" class="menutitle">
+                        <svg class="icon icon-menu" aria-hidden="true"><use xlink:href="/img/icons.svg#icon-menu"></use></svg><span class="menu-text">Menu</span>
+                    </label>
+                    <ul class="menu">
+                        <li ><a title="Home" href="/"><div class="menu-item-text">Home</div></a></li>
+                        <li ><a title="Archives" href="/archives/"><div class="menu-item-text">Archives</div></a></li>
+                        
+                        
+                        <li >
+                            <a href="/pages-output/about/"><div class="menu-item-text">About</div></a>
+                        </li>
+                        
+                        <!-- <li><a title="RSS" href="/feed.xml"><div class="menu-item-text">RSS</div></a></li> -->
+                    </ul>
+                </nav>
+
+                <nav id="socialmedia">
+                    <ul>
+                        <li><a title="LinkedIn" href="https://www.linkedin.com/in/matthewdavidson1" rel="external"><svg class="icon icon-linkedin"><use xlink:href="/img/icons.svg#icon-linkedin"></use></svg></a></li>
+                        <li><a title="GitHub" href="https://github.com/KingMob" rel="external"><svg class="icon icon-github-circled"><use xlink:href="/img/icons.svg#icon-github-circled"></use></svg></a></li>
+                        <li><a title="RSS Feed" href="/feed.xml"><svg class="icon icon-rss-squared"><use xlink:href="/img/icons.svg#icon-rss-squared"></use></svg></a></li>
+                    </ul>
+                </nav>
+            </nav>
+        </aside>
+
+        <article id="main">
+            
+<div id="post">
+    <div class="post-header">
+    <div id="post-meta">
+        <h1>Playing chicken with spotlight on a fanless macbook</h1>
+        <div class="byline">
+            <span class="date">July 23, 2011</span>
+            
+            <span class="author">By: admin</span>
+            
+        </div>
+    </div>
+</div>
+<div>
+    
+    <!-- content below --><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/07/Screen-shot-2011-07-23-at-22.37.06.png"></a>So, last week, when working on the laptop at home, I heard the last thing you want to hear on a laptop - a nasty crunchy whirring grinding noise coming from inside the macbook, that sounded like the hard drive diving a horrible, rotating circular death.
+<p>Not what you want to hear, when you haven't backed up for a couple of weeks.</p><p>Fast forward a week, and a new replacement disk later, and it turns out the problem area was a mangled fan.</p><p>Cue me feeling rather sheepish about the replacement 256 Gb SSD I just ordered.</p><h3 id="solid-state-black-macbook">Solid state black macbook.</h3><p>Right now, I'm my macbook is damn near silent - the are no whirring spindles, and crucially, with no fan, there are no moving parts to make any other noises.</p><p>However, until that replacement fan arrives, using this computer has taken on a comical element, where I need to work with <code>top</code> open in a window, and an eye on the CPU temp at all times, to kill CPU hungry processes, before they cook the laptop.</p><p>One real killer here is spotlight; before I had caught it the first time, it was well on it's way to monstering both cores on the macbook, taking the internal temperature to more than 90C (!) before I shut the machine down to stop any damage occurring.</p><p>Even renicing it to give the process a lower priority didn't help (I'm not sure why, one for another day's research).</p><p>Since then, I've found a handy one liner here, to stop automatic indexing, which I'm sharing here in case anyone finds themselves in a similarly ridiculous condition.</p><h3 id="how-to-kill-the-spotlight-index-before-it-kills-your-macbook">How to kill the Spotlight Index before it kills your macbook</h3><p>Run this command in a terminal, and spotlight will no longer index content on your mac:</p><pre lang="bash">sudo mdutil -a -i off</pre><p>Once you've fit a replacement fan inside your machine, you can switch it back on with this incantation below:</p><pre lang="bash">sudo mdutil -a -i on</pre><h3 id="that-fan-cant-arrive-quick-enough">That fan can't arrive quick enough</h3><p>Just to state the obvious - what I'm doing here is very risky, and probably quite stupid, without early warning software like Bjango's istat pro.</p><p>This provides more stats than I could ever want about the internals of my machine, and that, combined with constantly open terminal, means that I can usually <code>kill -9</code> runaway processes before they cook this laptop. Below are a few screengrabs of the temp stats iStat pro gives you from the menu bar, along with an example of the difference in CPU usage before and after killing the spotlight indexer:</p><p> </p><p><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/07/too-hot.png"><img class="alignleft" title="too hot" src="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/07/too-hot.png" alt="" width="252" height="667" /></a></p><p> </p><p><a href="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/07/phew.png"><img title="phew" src="http://chrisadams.me.uk/wordpress/wp-content/uploads/2011/07/phew.png" alt="" width="188" height="566" /></a></p><p> </p><p> </p><p> </p><p>Let's hope this isn't the last blog post on this macbook - it's been going strong since 2008 now, and I've grown pretty attached to it...</p>
+</div>
+
+<br/>
+
+
+    
+    <div id="prev-next">
+    
+    <a class="prev" href="/posts-output/2011-09-04-on-dconstruct/"><svg class="icon icon-circle-left"><use xlink:href="/img/icons.svg#icon-circle-left"></use></svg><div class="nav-text">On Dconstruct</div></a>
+    
+    
+    <a class="next" href="/posts-output/2011-06-26-bitten-by-tao-and-gingko-when-working-with-open-atrium/"><div class="nav-text"">Bitten by Tao and Gingko when working with Open Atrium</div><svg class="icon icon-circle-right"><use xlink:href="/img/icons.svg#icon-circle-right"></use></svg></a>
+    
+</div>
+
+    
+
+</div>
+
+            <hr/>
+            <div id="footercont">
+                Copyright &copy; 2020 Chris Adams
+                <br>Powered by <a href="http://cryogenweb.org">Cryogen</a>
+                <br>Theme by <a href="http://github.com/KingMob">KingMob</a>
+            </div>
+        </article>
+
+        <script src="/js/highlight.pack.js" type="text/javascript"></script>
+        <script>hljs.initHighlightingOnLoad();</script>
+
+        
+        
+    </body>
+</html>
