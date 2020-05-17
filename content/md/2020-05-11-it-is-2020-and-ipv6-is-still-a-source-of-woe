@@ -1,0 +1,34 @@
+{
+  :author "mrchrisadams"
+  :title "It's 2020 and ipv6 is still a source of woe",
+  :date "2020-05-10 13:40:19"
+  :draft? true
+}
+
+
+
+## The machines you use are probably already set up to do most jobs without too much set up
+
+To begin with, when learning to build static sites with clojure again, I had planned to buid everything on a single virtual machine, and using git's post-receive hooks, I wanted to trigger builds and the updating of a site - this would mean I wouldn't need to remember to deploy from a local machine all the time.
+
+As an experiment, I set up a virtual machine with one of [ipv6onlyhosting][ipv6onlyhosting]'s IPV6-only virtual private servers, and was able to set up nginx on the box, and tell it to run `lein build` every time I pushed code to a git repository I had put onto the server.
+
+It's an approach I've used before, the appeal for me was getting much of the functionality I might have used github actions for, without relying on a single provider.
+
+
+
+[ipv6onlyhosting]: https://ipv6onlyhosting.com/
+
+#### It's 2020 and ipv6 is still source of woe
+
+
+
+After writing ansible playbooks to set up nginx, and clojure, and the appropriate deploy users, and groups. I gave up after a few hours faffing with ipv6 - for reasons I didn't full understand, making outbound connections from an ipv6 server kept failing, which mean I couldn't run build tasks on the server itself.
+
+More specifically, the build tool, leiningen, couldn't download
+
+
+https://github.community/t5/GitHub-Actions/GitHub-Actions-IPv6-Network-Issues/td-p/52085
+https://github.com/actions/virtual-environments/issues/668
+
+https://github.com/marketplace/actions/rsyncer-action
