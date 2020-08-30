@@ -214,6 +214,7 @@ img {
 
 // make sure blog images do not expand beyond layout size
 
-figure img {
+article img, figure img {
   max-width: 100%;
+  height: auto;
 }

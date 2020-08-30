@@ -622,8 +622,9 @@ img {
   font-size: 11px;
 }
 
-figure img {
+article img, figure img {
   max-width: 100%;
+  height: auto;
 }
 
 /*# sourceMappingURL=blog.css.map */
